@@ -19,8 +19,17 @@ namespace SmartData.FindFake
             FindFakeApp app = FindFakeApp.Instance;
             if (app != null && Application.isPlaying)
             {
-                if (!app.Guard.AcceptUi(eventData, app.input)) return;
-                if (Time.unscaledTime - lastClick < app.input.buttonDebounce) return;
+                if (!app.Guard.AcceptUi(eventData, app.input))
+                {
+                    if (app.debug.logInput) Debug.Log("[FindFake] Klik ODBIJEN na '" + name + "': " + app.Guard.LastRejectReason);
+                    return;
+                }
+                if (Time.unscaledTime - lastClick < app.input.buttonDebounce)
+                {
+                    if (app.debug.logInput) Debug.Log("[FindFake] Klik ODBIJEN na '" + name + "': buttonDebounce");
+                    return;
+                }
+                if (app.debug.logInput) Debug.Log("[FindFake] Klik na '" + name + "' (pointerId " + eventData.pointerId + ", stanje " + app.State + ")");
             }
 
             lastClick = Time.unscaledTime;

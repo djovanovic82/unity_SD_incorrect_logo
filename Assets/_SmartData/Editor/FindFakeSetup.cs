@@ -188,14 +188,15 @@ namespace SmartData.FindFake.EditorTools
                 refs.mainCamera = cam;
             }
 
-            // ---- EventSystem (nikad duplikat) ----
+            // ---- EventSystem (nikad duplikat, modul prema aktivnom Input backend-u) ----
             EventSystem es = UnityEngine.Object.FindObjectOfType<EventSystem>(true);
             if (es == null)
             {
                 GameObject esGo = NewObject("EventSystem", null);
-                es = Undo.AddComponent<EventSystem>(esGo);
+                Undo.AddComponent<EventSystem>(esGo);
             }
-            if (es.GetComponent<BaseInputModule>() == null) Undo.AddComponent<StandaloneInputModule>(es.gameObject);
+            string module = EventSystemGuard.Ensure();
+            if (module.StartsWith("GREŠKA")) Debug.LogError("[FindFake] " + module);
 
             // ---- Canvas ----
             if (refs.canvas == null)
@@ -270,6 +271,8 @@ namespace SmartData.FindFake.EditorTools
             if (view.tapArea == null)
             {
                 Image img = ImageChild(view.transform, "TapArea", new Color(0f, 0f, 0f, 0f), 0, null);
+                img.raycastTarget = true;
+                img.canvasRenderer.cullTransparentMesh = false;
                 view.tapArea = GetOrAdd<SmartButton>(img.gameObject);
                 view.tapArea.targetGraphic = img;
             }

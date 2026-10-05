@@ -31,7 +31,7 @@ namespace SmartData.FindFake
     /// </summary>
     [DisallowMultipleComponent]
     [DefaultExecutionOrder(-100)]
-    public class FindFakeApp : MonoBehaviour
+    public partial class FindFakeApp : MonoBehaviour
     {
         public static FindFakeApp Instance { get; private set; }
 
@@ -117,6 +117,9 @@ namespace SmartData.FindFake
 
             store = new MatchDataStore(data.folderName);
             InputGuard.ConfigurePlatform(input);
+            string module = EventSystemGuard.Ensure();
+            if (module.StartsWith("GREŠKA")) Debug.LogError("[FindFake] " + module);
+            else if (debug.logInput) Debug.Log("[FindFake] UI input modul: " + module);
             KioskController.Apply(kiosk, display);
             BindViews();
 
@@ -395,8 +398,11 @@ namespace SmartData.FindFake
             lastInteraction = Time.unscaledTime;
             PlaySound(sound.uiClick);
 
-            if (gameplay.startMode == StartMode.AnyPlayerStarts)
+            bool editorSolo = Application.isEditor && debug.editorSinglePlayerStart;
+            if (gameplay.startMode == StartMode.AnyPlayerStarts || editorSolo)
             {
+                if (editorSolo && gameplay.startMode == StartMode.BothPlayersReady)
+                    Debug.Log("[FindFake] Editor: jedan pritisak pokreće meč (DEBUG → editorSinglePlayerStart). U buildu su potrebna oba igrača.");
                 BeginMatch();
                 return;
             }
@@ -550,7 +556,12 @@ namespace SmartData.FindFake
         {
             if (State != AppState.Playing || board == null || tile == null) return;
             int player = board.PlayerIndex;
-            if (!guard.AcceptGameTap(eventData, player, input)) return;
+            if (!guard.AcceptGameTap(eventData, player, input))
+            {
+                if (debug.logInput) Debug.Log("[FindFake] Dodir igrača " + player + " ODBIJEN: " + guard.LastRejectReason);
+                return;
+            }
+            if (debug.logInput) Debug.Log("[FindFake] Dodir igrača " + player + " na polje " + tile.index);
             lastInteraction = Time.unscaledTime;
 
             tile.Punch(animations.tapPunchScale, animations.tapPunchDuration);

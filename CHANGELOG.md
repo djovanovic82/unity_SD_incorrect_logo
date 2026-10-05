@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.2.0 — 2026-10-05
+- ISPRAVKA (glavni uzrok "klik ne radi"): providna Attract TapArea nije primala klikove jer je u Unity 2022
+  "Cull Transparent Mesh" podrazumevano uključen. Sada se isključuje u runtime-u (radi i na postojećoj sceni) i u Setup/Repair.
+- ISPRAVKA: EventSystem uvek dobija input modul koji odgovara aktivnom Input backend-u (Old / Both / New Input System).
+- ISPRAVKA: CanvasGroup se postavlja pre aktivacije ekrana (Selectable-i odmah vide ispravno interactable stanje).
+- Start ekran: SPREMAN postaje zelen, protivnik vidi "Protivnik je spreman!"; dugme se više ne sivi.
+- DEBUG → editorSinglePlayerStart (podrazumevano uključeno): u Editoru jedan pritisak pokreće meč. Build se ne menja.
+- DEBUG → logInput: loguje svaki klik/dodir i razlog odbijanja.
+- FLOW SELF-TEST (Play Mode, dugme u Inspectoru): automatski prolazi ceo tok i raycast-om proverava da li išta blokira dugmad i polja.
+- Validator: provera input modula, TapArea i Input System podešavanja.
+
 ## 1.1.0 — 2026-10-05
 - Novo: `LAYOUT → splitDirection` (AlongLongSide / AlongShortSide / Auto) – podela ekrana prema dužoj ili kraćoj ivici, nezavisno od orijentacije (landscape i portrait).
 - Isto podešavanje po profilu (`DisplayProfile → splitDirection`) uz override.

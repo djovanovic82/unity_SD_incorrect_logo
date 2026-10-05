@@ -39,7 +39,14 @@ namespace SmartData.FindFake
             if (tapArea != null)
             {
                 var img = tapArea.GetComponent<Image>();
-                if (img != null) img.color = new Color(0f, 0f, 0f, 0f);
+                if (img != null)
+                {
+                    img.color = new Color(0f, 0f, 0f, 0f);
+                    img.raycastTarget = true;
+                    // KLJUČNO: u Unity 2022 je "Cull Transparent Mesh" podrazumevano uključen –
+                    // potpuno providna slika se tada ne iscrtava i NE PRIMA klikove.
+                    img.canvasRenderer.cullTransparentMesh = false;
+                }
                 tapArea.transition = Selectable.Transition.None;
             }
         }

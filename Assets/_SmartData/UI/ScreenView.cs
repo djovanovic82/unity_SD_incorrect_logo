@@ -19,12 +19,15 @@ namespace SmartData.FindFake
 
         public void SetVisible(bool visible, float alpha = 1f)
         {
-            if (gameObject.activeSelf != visible) gameObject.SetActive(visible);
+            // CanvasGroup se postavlja PRE aktivacije, da Selectable-i u OnEnable vide ispravno stanje.
             CanvasGroup g = Group;
-            if (g == null) return;
-            g.alpha = visible ? alpha : 0f;
-            g.interactable = visible;
-            g.blocksRaycasts = visible;
+            if (g != null)
+            {
+                g.alpha = visible ? alpha : 0f;
+                g.interactable = visible;
+                g.blocksRaycasts = visible;
+            }
+            if (gameObject.activeSelf != visible) gameObject.SetActive(visible);
         }
 
         public void SetAlpha(float alpha)

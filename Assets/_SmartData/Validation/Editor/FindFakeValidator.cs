@@ -81,6 +81,13 @@ namespace SmartData.FindFake.Validation
             Require(issues, r.overlay, "OverlayRoot", app);
             Require(issues, r.sound, "SoundPlayer", app);
 
+            if (r.attract != null && r.attract.tapArea != null)
+            {
+                var tapImg = r.attract.tapArea.GetComponent<UnityEngine.UI.Image>();
+                if (tapImg == null || !tapImg.raycastTarget)
+                    issues.Add(new Issue(Severity.Error, "Attract TapArea nema Image sa Raycast Target – dodir ne pokreće igru.", r.attract.tapArea));
+            }
+
             if (r.game != null)
             {
                 for (int p = 1; p <= 2; p++)
@@ -164,8 +171,13 @@ namespace SmartData.FindFake.Validation
                 issues.Add(new Issue(Severity.Error, "Verzija mora biti oblika 1.0.0: " + app.project.version, app));
 
 #if !ENABLE_LEGACY_INPUT_MANAGER
-            issues.Add(new Issue(Severity.Error, "Project Settings → Player → Active Input Handling mora biti 'Input Manager (Old)' ili 'Both'."));
+            issues.Add(new Issue(Severity.Warning, "Active Input Handling je 'Input System Package (New)'. UI radi preko InputSystemUIInputModule, ali skrivena admin zona i vizualizacija dodira ne rade. Preporuka: 'Both' ili 'Input Manager (Old)'."));
+            if (System.Type.GetType("UnityEngine.InputSystem.UI.InputSystemUIInputModule, Unity.InputSystem") == null)
+                issues.Add(new Issue(Severity.Error, "Active Input Handling je 'New', a paket Input System nije instaliran – UI neće primati klikove."));
 #endif
+            EventSystem esCheck = Object.FindObjectOfType<EventSystem>(true);
+            if (esCheck != null && esCheck.GetComponent<BaseInputModule>() == null)
+                issues.Add(new Issue(Severity.Error, "EventSystem nema input modul – klikovi ne rade. Pokreni Repair Scene.", esCheck));
             if (!FindFakeSetup.TmpEssentialsReady())
                 issues.Add(new Issue(Severity.Error, "TMP Essential Resources nisu uvezeni (Window → TextMeshPro)."));
             if (app.typography.font == null)

@@ -12,7 +12,7 @@ Duel 1 na 1 za touch ekrane. Svaki igrač ima svoju tablu sa istim logoom ponovl
 ## Instalacija (macOS, jedna komanda)
 
 ```bash
-mkdir -p ~/UnityProjects && unzip -o ~/Downloads/unity_SD_pronadji_logo_v1.1.0.zip -d ~/UnityProjects/ && open -a "Unity Hub"
+mkdir -p ~/UnityProjects && unzip -o ~/Downloads/unity_SD_pronadji_logo_v1.2.0.zip -d ~/UnityProjects/ && open -a "Unity Hub"
 ```
 
 Zatim u Unity Hub-u izaberi **Add → Add project from disk → ~/UnityProjects/unity_SD_pronadji_logo**, sa verzijom 2022.3.19f1.
@@ -120,6 +120,14 @@ Validator upozorava ako original i greška nisu iste dimenzije, jer bi se razlik
 - **NOVA IGRA** prolazi kroz isti full reset kao svež start: rezultat, tajmeri, korutine, zamrzavanja, okviri, skala i lock.
 
 ---
+
+## Provera toka (FLOW SELF-TEST)
+
+U Play Mode-u, na SmartDataApp Inspectoru, klikni **Pokreni FLOW SELF-TEST**. Test ubrzava tajminge (samo za vreme testa) i prolazi ceo tok: Attract → Start → odbrojavanje → pogrešan dodir i zamrzavanje → pogoci do kraja meča → rezultat → povratak na Attract → full reset. Za svako dugme i polje simulira klik na centar i javlja da li ga neki drugi objekat blokira. Izveštaj se pojavljuje u Inspectoru i u Console.
+
+Ako klik i dalje ne radi, uključi **DEBUG → logInput**. Console će tada za svaki klik ispisati da li je prihvaćen, a ako nije, zbog čega (input lock, debounce, sintetički miš...).
+
+**Testiranje mišem:** `DEBUG → editorSinglePlayerStart` je podrazumevano uključen, pa u Editoru jedan klik na SPREMAN pokreće meč. U buildu je i dalje potrebno da oba igrača pritisnu SPREMAN.
 
 ## Admin, podaci, kiosk
 

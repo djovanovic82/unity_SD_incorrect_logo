@@ -12,7 +12,7 @@ namespace SmartData.FindFake
     {
         public string productName = "Pronađi pogrešan logo";
         public string companyName = "SmartData";
-        public string version = "1.1.0";
+        public string version = "1.2.0";
         [Min(1)] public int buildNumber = 1;
         public string bundleIdentifier = "com.smartdata.pronadjilogo";
     }
@@ -246,5 +246,9 @@ namespace SmartData.FindFake
         public bool showDebugOverlay;
         public bool showTouches;
         public bool logStateChanges = true;
+        [Tooltip("Loguje svaki klik/dodir i razlog ako je odbijen (lock, debounce, sintetički miš...).")]
+        public bool logInput;
+        [Tooltip("Samo u Unity Editoru: jedan pritisak na SPREMAN/START pokreće meč (lakše testiranje mišem). Build se ne menja.")]
+        public bool editorSinglePlayerStart = true;
     }
 }

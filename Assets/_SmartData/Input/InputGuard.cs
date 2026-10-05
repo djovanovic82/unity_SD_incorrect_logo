@@ -49,33 +49,48 @@ namespace SmartData.FindFake
             return activity;
         }
 
+        /// <summary>Razlog poslednjeg odbijanja (za DEBUG → logInput i self-test).</summary>
+        public string LastRejectReason { get; private set; } = "";
+
+        private bool Reject(string reason)
+        {
+            LastRejectReason = reason;
+            return false;
+        }
+
         private bool PassesPointerType(PointerEventData e, InputBlock cfg)
         {
             if (e == null) return true;
+#if ENABLE_INPUT_SYSTEM && !ENABLE_LEGACY_INPUT_MANAGER
+            // Novi Input System koristi drugačije pointerId vrednosti – filtriranje tipa pokazivača se preskače.
+            return true;
+#else
             if (e.pointerId < 0)
             {
                 // -1 = levi taster miša; desni/srednji se ne prihvataju.
-                if (e.pointerId != -1 || !cfg.allowMouse) return false;
-                if (Time.unscaledTime - lastTouchTime < cfg.touchMouseSuppression) return false;
+                if (e.pointerId != -1) return Reject("desni/srednji taster miša");
+                if (!cfg.allowMouse) return Reject("miš je isključen (INPUT → allowMouse)");
+                if (Time.unscaledTime - lastTouchTime < cfg.touchMouseSuppression) return Reject("sintetički miš posle dodira");
                 return true;
             }
             lastTouchTime = Time.unscaledTime;
             return true;
+#endif
         }
 
         public bool AcceptGameTap(PointerEventData e, int player, InputBlock cfg)
         {
-            if (IsLocked) return false;
+            if (IsLocked) return Reject("input lock posle promene stanja");
             if (!PassesPointerType(e, cfg)) return false;
             int p = Mathf.Clamp(player, 0, lastPlayerTap.Length - 1);
-            if (Time.unscaledTime - lastPlayerTap[p] < cfg.tapDebounce) return false;
+            if (Time.unscaledTime - lastPlayerTap[p] < cfg.tapDebounce) return Reject("anti-spam (tapDebounce)");
             lastPlayerTap[p] = Time.unscaledTime;
             return true;
         }
 
         public bool AcceptUi(PointerEventData e, InputBlock cfg)
         {
-            if (IsLocked) return false;
+            if (IsLocked) return Reject("input lock posle promene stanja");
             return PassesPointerType(e, cfg);
         }
 

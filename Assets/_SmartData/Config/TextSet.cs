@@ -20,6 +20,7 @@ namespace SmartData.FindFake
         public string readyDone = "SPREMAN!";
         public string startButton = "START";
         public string waitingOpponent = "Čeka se protivnik...";
+        public string opponentReady = "Protivnik je spreman!";
 
         [Header("Igra")]
         public string roundLabel = "RUNDA {0}";
@@ -81,6 +82,7 @@ namespace SmartData.FindFake
                 readyDone = "READY!",
                 startButton = "START",
                 waitingOpponent = "Waiting for opponent...",
+                opponentReady = "Opponent is ready!",
                 roundLabel = "ROUND {0}",
                 go = "FIND THE FAKE!",
                 youFound = "GOT IT!",

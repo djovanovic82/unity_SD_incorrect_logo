@@ -19,6 +19,10 @@ namespace SmartData.FindFake
         public Half player1 = new Half();
         public Half player2 = new Half();
 
+        private Color accent1 = Color.white;
+        private Color accent2 = Color.white;
+        private Color readyColor = Color.green;
+
         public Half Get(int player)
         {
             return player == 2 ? player2 : player1;
@@ -40,6 +44,9 @@ namespace SmartData.FindFake
 
         public override void ApplyStyle(FindFakeApp app, float fontScale)
         {
+            accent1 = app.visuals.player1Accent;
+            accent2 = app.visuals.player2Accent;
+            readyColor = app.visuals.correctColor;
             for (int p = 1; p <= 2; p++)
             {
                 Half h = Get(p);
@@ -73,9 +80,18 @@ namespace SmartData.FindFake
                 else
                 {
                     UiStyle.Label(h.button, me ? texts.readyDone : texts.readyButton);
-                    UiStyle.SetText(h.status, me && !other ? texts.waitingOpponent : "");
+                    string status = "";
+                    if (me && !other) status = texts.waitingOpponent;
+                    else if (!me && other) status = texts.opponentReady;
+                    UiStyle.SetText(h.status, status);
                 }
-                if (h.button != null) h.button.interactable = mode == StartMode.AnyPlayerStarts || !me;
+                if (h.button != null)
+                {
+                    // Dugme ostaje interaktivno (bez sivog stanja); ponovni pritisak se samo ignoriše.
+                    h.button.interactable = true;
+                    var img = h.button.targetGraphic as UnityEngine.UI.Image;
+                    if (img != null) img.color = me && mode == StartMode.BothPlayersReady ? readyColor : (p == 2 ? accent2 : accent1);
+                }
             }
         }
     }

@@ -116,7 +116,20 @@ namespace SmartData.FindFake.EditorTools
                 if (newLive != live) EditorPrefs.SetBool(LiveApplyKey, newLive);
             }
             if (Application.isPlaying)
+            {
                 EditorGUILayout.HelpBox("Play Mode – stanje: " + app.State + " | profil: " + app.ActiveProfile.Label, MessageType.None);
+                using (new EditorGUI.DisabledScope(app.SelfTestRunning))
+                {
+                    if (GUILayout.Button(app.SelfTestRunning ? "Self-test je u toku..." : "Pokreni FLOW SELF-TEST")) app.RunSelfTest();
+                }
+                if (!string.IsNullOrEmpty(app.SelfTestReport))
+                    EditorGUILayout.HelpBox(app.SelfTestReport, app.SelfTestReport.Contains("FAIL") ? MessageType.Error : MessageType.Info);
+                Repaint();
+            }
+            else
+            {
+                EditorGUILayout.HelpBox("FLOW SELF-TEST: uđi u Play Mode i klikni dugme koje se ovde pojavi.", MessageType.None);
+            }
         }
 
         private static void PreviewButton(FindFakeApp app, string label, AppState state)
