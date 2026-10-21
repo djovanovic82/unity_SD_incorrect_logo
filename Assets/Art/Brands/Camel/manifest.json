@@ -1,0 +1,152 @@
+{
+  "brand": "Camel",
+  "original": "Camel_original.png",
+  "background": "Camel_background.png",
+  "aspect": 1.589,
+  "rounds": [
+    {
+      "id": "camel_senka",
+      "fake": "Camel_greska_senka.png",
+      "description": "Kamila nema senku"
+    },
+    {
+      "id": "camel_boja",
+      "fake": "Camel_greska_boja.png",
+      "description": "Pogrešna nijansa (zelenkasto žuta)"
+    },
+    {
+      "id": "camel_ogledalo",
+      "fake": "Camel_greska_ogledalo.png",
+      "description": "Logo je u ogledalu"
+    },
+    {
+      "id": "camel_slovo",
+      "fake": "Camel_greska_slovo.png",
+      "description": "Nedostaje slovo L"
+    },
+    {
+      "id": "camel_nagib",
+      "fake": "Camel_greska_nagib.png",
+      "description": "Logo je blago nakrivljen"
+    },
+    {
+      "id": "camel_spljosten",
+      "fake": "Camel_greska_spljosten.png",
+      "description": "Logo je spljošten"
+    }
+  ],
+  "themeName": "Camel",
+  "tileAspect": 1.6,
+  "visuals": {
+    "backgroundColor": {
+      "r": 0.1804,
+      "g": 0.102,
+      "b": 0.0471,
+      "a": 1.0
+    },
+    "player1Accent": {
+      "r": 0.9412,
+      "g": 0.7255,
+      "b": 0.2941,
+      "a": 1.0
+    },
+    "player2Accent": {
+      "r": 0.8784,
+      "g": 0.4706,
+      "b": 0.1843,
+      "a": 1.0
+    },
+    "tileColor": {
+      "r": 0.1647,
+      "g": 0.0941,
+      "b": 0.0431,
+      "a": 1.0
+    },
+    "tileFrameColor": {
+      "r": 0.9412,
+      "g": 0.7255,
+      "b": 0.2941,
+      "a": 0.35
+    },
+    "tileFrameThickness": 5,
+    "tileIconPadding": 0.07,
+    "correctColor": {
+      "r": 0.298,
+      "g": 0.851,
+      "b": 0.3922,
+      "a": 1.0
+    },
+    "wrongColor": {
+      "r": 1.0,
+      "g": 0.302,
+      "b": 0.2392,
+      "a": 1.0
+    },
+    "revealColor": {
+      "r": 1.0,
+      "g": 0.8784,
+      "b": 0.5412,
+      "a": 1.0
+    },
+    "lockOverlayColor": {
+      "r": 0.4706,
+      "g": 0.1176,
+      "b": 0.0392,
+      "a": 0.55
+    },
+    "dividerColor": {
+      "r": 0.9412,
+      "g": 0.7255,
+      "b": 0.2941,
+      "a": 0.45
+    },
+    "buttonColor": {
+      "r": 0.9412,
+      "g": 0.7255,
+      "b": 0.2941,
+      "a": 1.0
+    },
+    "buttonTextColor": {
+      "r": 0.1647,
+      "g": 0.0941,
+      "b": 0.0431,
+      "a": 1.0
+    },
+    "textColor": {
+      "r": 1.0,
+      "g": 0.9529,
+      "b": 0.8627,
+      "a": 1.0
+    },
+    "secondaryTextColor": {
+      "r": 1.0,
+      "g": 0.9529,
+      "b": 0.8627,
+      "a": 0.78
+    },
+    "hudColor": {
+      "r": 0.0,
+      "g": 0.0,
+      "b": 0.0,
+      "a": 0.35
+    },
+    "adminPanelColor": {
+      "r": 0.1176,
+      "g": 0.0706,
+      "b": 0.0314,
+      "a": 0.97
+    }
+  },
+  "texts": [
+    {
+      "languageCode": "SR",
+      "title": "PRONAĐI POGREŠAN LOGO",
+      "subtitle": "Camel izazov – dodirni ekran za početak"
+    },
+    {
+      "languageCode": "EN",
+      "title": "FIND THE FAKE LOGO",
+      "subtitle": "Camel challenge – touch the screen to start"
+    }
+  ]
+}

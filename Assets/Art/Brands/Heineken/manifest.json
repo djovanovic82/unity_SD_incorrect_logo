@@ -1,0 +1,152 @@
+{
+  "brand": "Heineken",
+  "original": "Heineken_original.png",
+  "background": "Heineken_background.png",
+  "aspect": 3.711,
+  "rounds": [
+    {
+      "id": "heineken_zvezda",
+      "fake": "Heineken_greska_zvezda.png",
+      "description": "Zvezda je zelena"
+    },
+    {
+      "id": "heineken_boja",
+      "fake": "Heineken_greska_boja.png",
+      "description": "Zelena je plavičasta"
+    },
+    {
+      "id": "heineken_ogledalo",
+      "fake": "Heineken_greska_ogledalo.png",
+      "description": "Logo je u ogledalu"
+    },
+    {
+      "id": "heineken_znak",
+      "fake": "Heineken_greska_znak.png",
+      "description": "Nedostaje znak ®"
+    },
+    {
+      "id": "heineken_nagib",
+      "fake": "Heineken_greska_nagib.png",
+      "description": "Logo je blago nakrivljen"
+    },
+    {
+      "id": "heineken_spljosten",
+      "fake": "Heineken_greska_spljosten.png",
+      "description": "Logo je spljošten"
+    }
+  ],
+  "themeName": "Heineken",
+  "tileAspect": 3.2,
+  "visuals": {
+    "backgroundColor": {
+      "r": 0.0,
+      "g": 0.2275,
+      "b": 0.1059,
+      "a": 1.0
+    },
+    "player1Accent": {
+      "r": 1.0,
+      "g": 1.0,
+      "b": 1.0,
+      "a": 1.0
+    },
+    "player2Accent": {
+      "r": 1.0,
+      "g": 1.0,
+      "b": 1.0,
+      "a": 1.0
+    },
+    "tileColor": {
+      "r": 1.0,
+      "g": 1.0,
+      "b": 1.0,
+      "a": 1.0
+    },
+    "tileFrameColor": {
+      "r": 1.0,
+      "g": 1.0,
+      "b": 1.0,
+      "a": 0.22
+    },
+    "tileFrameThickness": 5,
+    "tileIconPadding": 0.05,
+    "correctColor": {
+      "r": 0.4941,
+      "g": 0.851,
+      "b": 0.3412,
+      "a": 1.0
+    },
+    "wrongColor": {
+      "r": 0.8902,
+      "g": 0.0235,
+      "b": 0.0745,
+      "a": 1.0
+    },
+    "revealColor": {
+      "r": 1.0,
+      "g": 0.8196,
+      "b": 0.0,
+      "a": 1.0
+    },
+    "lockOverlayColor": {
+      "r": 0.4706,
+      "g": 0.0,
+      "b": 0.0,
+      "a": 0.5
+    },
+    "dividerColor": {
+      "r": 1.0,
+      "g": 1.0,
+      "b": 1.0,
+      "a": 0.35
+    },
+    "buttonColor": {
+      "r": 1.0,
+      "g": 1.0,
+      "b": 1.0,
+      "a": 1.0
+    },
+    "buttonTextColor": {
+      "r": 0.0,
+      "g": 0.5176,
+      "b": 0.2392,
+      "a": 1.0
+    },
+    "textColor": {
+      "r": 1.0,
+      "g": 1.0,
+      "b": 1.0,
+      "a": 1.0
+    },
+    "secondaryTextColor": {
+      "r": 1.0,
+      "g": 1.0,
+      "b": 1.0,
+      "a": 0.78
+    },
+    "hudColor": {
+      "r": 0.0,
+      "g": 0.0,
+      "b": 0.0,
+      "a": 0.3
+    },
+    "adminPanelColor": {
+      "r": 0.0,
+      "g": 0.1176,
+      "b": 0.0549,
+      "a": 0.97
+    }
+  },
+  "texts": [
+    {
+      "languageCode": "SR",
+      "title": "PRONAĐI POGREŠAN LOGO",
+      "subtitle": "Heineken izazov – dodirni ekran za početak"
+    },
+    {
+      "languageCode": "EN",
+      "title": "FIND THE FAKE LOGO",
+      "subtitle": "Heineken challenge – touch the screen to start"
+    }
+  ]
+}

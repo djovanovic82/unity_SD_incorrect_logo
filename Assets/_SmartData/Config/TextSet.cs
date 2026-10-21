@@ -44,6 +44,7 @@ namespace SmartData.FindFake
         public string adminResume = "NAZAD";
         public string adminNewGame = "NOVA IGRA";
         public string adminLanguage = "JEZIK: {0}";
+        public string adminTheme = "TEMA: {0}";
         public string adminExport = "IZVEZI CSV";
         public string adminReset = "OBRIŠI STATISTIKU";
         public string adminResetConfirm = "POTVRDI BRISANJE";
@@ -100,6 +101,7 @@ namespace SmartData.FindFake
                 adminResume = "BACK",
                 adminNewGame = "NEW GAME",
                 adminLanguage = "LANGUAGE: {0}",
+                adminTheme = "THEME: {0}",
                 adminExport = "EXPORT CSV",
                 adminReset = "RESET STATISTICS",
                 adminResetConfirm = "CONFIRM RESET",

@@ -12,7 +12,7 @@ Duel 1 na 1 za touch ekrane. Svaki igrač ima svoju tablu sa istim logoom ponovl
 ## Instalacija (macOS, jedna komanda)
 
 ```bash
-mkdir -p ~/UnityProjects && unzip -o ~/Downloads/unity_SD_pronadji_logo_v1.2.0.zip -d ~/UnityProjects/ && open -a "Unity Hub"
+mkdir -p ~/UnityProjects && unzip -o ~/Downloads/unity_SD_pronadji_logo_v1.3.0.zip -d ~/UnityProjects/ && open -a "Unity Hub"
 ```
 
 Zatim u Unity Hub-u izaberi **Add → Add project from disk → ~/UnityProjects/unity_SD_pronadji_logo**, sa verzijom 2022.3.19f1.
@@ -97,6 +97,24 @@ U vrhu Inspectora se nalaze:
 | CONTENT | languages (SR, EN), showDifferenceDescription | |
 
 ---
+
+## Dizajn teme (brendovi)
+
+U projektu su tri gotove teme: **Camel**, **Coca-Cola** i **Heineken**. Izvorna grafika je u `Assets/Art/Brands/<Brend>/` (original, 6 verzija sa greškom, pozadina, `manifest.json`).
+
+1. Inspector → **TEME** → **Kreiraj / dopuni brend teme**. Pravi `Assets/Data/Brands/<Brend>/Theme_<Brend>.asset`, bazu logoa i LogoData po rundi. Postojeći asseti se ne prepisuju.
+2. Klik na ime teme je primenjuje: VISUALS boje, pozadina, polja, naslovi, `tileAspect` i baza logoa.
+3. Na licu mesta: skriveni admin → **TEMA** (u buildu se izbor pamti).
+
+| Tema | Polja | Greške po rundama |
+|---|---|---|
+| Camel | tamno braon, 1.6:1 | bez senke kamile, nijansa, ogledalo, nema slova L, nagib, spljošten |
+| Coca-Cola | bela na crvenoj, 2:1 | tanja slova, nijansa, ogledalo, nema crtice, nagib, spljošten |
+| Heineken | bela na zelenoj, 3.2:1 | zelena zvezda, nijansa, ogledalo, nema ®, nagib, spljošten |
+
+**Nova tema:** napravi folder `Assets/Art/Brands/<Brend>/` po uzoru na postojeće (original, greške istih dimenzija, pozadina, `manifest.json` sa bojama i rundama), pa klikni "Kreiraj / dopuni". Može i ručno: Create → SmartData → Pronađi pogrešan logo → Theme Preset.
+
+Brend fontovi nisu uključeni; ako ih imaš kao TMP Font Asset, dodeli ih u polju `font` teme.
 
 ## Dodavanje logoa
 

@@ -29,6 +29,7 @@ namespace SmartData.FindFake
         [SerializeField, HideInInspector] private float padding = 16f;
         [SerializeField, HideInInspector] private float spacing = 18f;
         [SerializeField, HideInInspector] private float maxTile = 320f;
+        [SerializeField, HideInInspector] private float aspect = 1f;
 
         private Action<PlayerBoard, LogoTile, PointerEventData> onTileDown;
         private bool locked = true;
@@ -59,6 +60,7 @@ namespace SmartData.FindFake
             padding = layout.boardPadding;
             spacing = layout.tileSpacing;
             maxTile = layout.maxTileSize;
+            aspect = Mathf.Clamp(layout.tileAspect, 0.25f, 4f);
             List<LogoTile> created = EnsureTiles();
             LayoutTiles();
             return created;
@@ -115,12 +117,13 @@ namespace SmartData.FindFake
             Vector2 avail = size - new Vector2(padding * 2f, padding * 2f);
             Vector2Int shape = autoShape ? BestShape(count, avail) : new Vector2Int(columns, Mathf.CeilToInt(count / (float)columns));
             CurrentShape = shape;
-            float cell = CellSize(shape, avail);
+            float cellW = CellSize(shape, avail);
+            float cellH = cellW / aspect;
 
             int c = shape.x;
             int r = shape.y;
-            float gridW = c * cell + (c - 1) * spacing;
-            float gridH = r * cell + (r - 1) * spacing;
+            float gridW = c * cellW + (c - 1) * spacing;
+            float gridH = r * cellH + (r - 1) * spacing;
             int lastRowItems = count - (r - 1) * c;
             var center = new Vector2(0.5f, 0.5f);
 
@@ -130,16 +133,16 @@ namespace SmartData.FindFake
                 if (tile == null) continue;
                 int row = i / c;
                 int col = i % c;
-                float x = -gridW * 0.5f + cell * 0.5f + col * (cell + spacing);
-                if (row == r - 1 && lastRowItems < c) x += (c - lastRowItems) * (cell + spacing) * 0.5f; // poslednji red centriran
-                float y = gridH * 0.5f - cell * 0.5f - row * (cell + spacing);
+                float x = -gridW * 0.5f + cellW * 0.5f + col * (cellW + spacing);
+                if (row == r - 1 && lastRowItems < c) x += (c - lastRowItems) * (cellW + spacing) * 0.5f; // poslednji red centriran
+                float y = gridH * 0.5f - cellH * 0.5f - row * (cellH + spacing);
 
                 RectTransform rt = tile.Rect;
                 if (rt.anchorMin != center) rt.anchorMin = center;
                 if (rt.anchorMax != center) rt.anchorMax = center;
                 if (rt.pivot != center) rt.pivot = center;
                 var pos = new Vector2(x, y);
-                var sz = new Vector2(cell, cell);
+                var sz = new Vector2(cellW, cellH);
                 if ((rt.anchoredPosition - pos).sqrMagnitude > 0.01f) rt.anchoredPosition = pos;
                 if ((rt.sizeDelta - sz).sqrMagnitude > 0.01f) rt.sizeDelta = sz;
             }
@@ -159,8 +162,8 @@ namespace SmartData.FindFake
                 if ((r - 1) * c >= count) continue; // prazan red
                 var shape = new Vector2Int(c, r);
                 float score = Score(shape, count, avail);
-                bool better = score > bestScore + 0.5f;
-                bool tieMoreSquare = Mathf.Abs(score - bestScore) <= 0.5f && Mathf.Abs(c - r) < Mathf.Abs(best.x - best.y);
+                bool better = score > bestScore * 1.01f;
+                bool tieMoreSquare = Mathf.Abs(score - bestScore) <= bestScore * 0.01f && Mathf.Abs(c - r) < Mathf.Abs(best.x - best.y);
                 if (better || tieMoreSquare)
                 {
                     best = shape;
@@ -172,15 +175,18 @@ namespace SmartData.FindFake
 
         private float Score(Vector2Int shape, int count, Vector2 avail)
         {
-            float cell = CellSize(shape, avail);
-            return count % shape.x == 0 ? cell : cell * 0.85f;
+            float cellW = CellSize(shape, avail);
+            float area = cellW * cellW / aspect; // poređenje po površini polja (radi i za pravougaona polja)
+            return count % shape.x == 0 ? area : area * 0.6f;
         }
 
+        /// <summary>Širina polja; visina = širina / aspect. maxTile ograničava visinu.</summary>
         private float CellSize(Vector2Int shape, Vector2 avail)
         {
             float w = (avail.x - (shape.x - 1) * spacing) / shape.x;
             float h = (avail.y - (shape.y - 1) * spacing) / shape.y;
-            return Mathf.Clamp(Mathf.Min(w, h), 1f, maxTile);
+            float width = Mathf.Min(w, h * aspect, maxTile * aspect);
+            return Mathf.Max(1f, width);
         }
 
         private void OnEnable()

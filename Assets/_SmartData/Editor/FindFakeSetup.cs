@@ -53,6 +53,7 @@ namespace SmartData.FindFake.EditorTools
 
             FindFakeApp app = RepairScene(firstTime);
             DemoContent.EnsureDemoContent(app);
+            BrandThemes.EnsureThemes(app);
             BuildSettingsUtil.EnsureSceneInBuild(ScenePath);
 
             app.PreviewState(AppState.Attract);
@@ -426,6 +427,11 @@ namespace SmartData.FindFake.EditorTools
             if (view.resume == null) view.resume = ButtonChild(buttons, "ResumeButton", "NAZAD", Vector2.zero, Vector2.one);
             if (view.newGame == null) view.newGame = ButtonChild(buttons, "NewGameButton", "NOVA IGRA", Vector2.zero, Vector2.one);
             if (view.language == null) view.language = ButtonChild(buttons, "LanguageButton", "JEZIK", Vector2.zero, Vector2.one);
+            if (view.theme == null)
+            {
+                view.theme = ButtonChild(buttons, "ThemeButton", "TEMA", Vector2.zero, Vector2.one);
+                view.theme.transform.SetSiblingIndex(view.language != null ? view.language.transform.GetSiblingIndex() + 1 : 0);
+            }
             if (view.export == null) view.export = ButtonChild(buttons, "ExportButton", "IZVEZI CSV", Vector2.zero, Vector2.one);
             if (view.resetStats == null) view.resetStats = ButtonChild(buttons, "ResetStatsButton", "OBRIŠI STATISTIKU", Vector2.zero, Vector2.one);
             if (view.quit == null) view.quit = ButtonChild(buttons, "QuitButton", "IZLAZ", Vector2.zero, Vector2.one);

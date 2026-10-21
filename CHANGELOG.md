@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.3.0 — 2026-10-21
+- Dizajn teme (ThemePreset): Camel, Coca-Cola, Heineken – boje, pozadina (Cover, radi za landscape i portrait), polja, dugmad, naslovi SR/EN i sopstvena baza logoa.
+- Po brendu 6 rundi sa različitim greškama (boja, ogledalo, nagib, spljošten, deo koji nedostaje, brend-specifična greška).
+- LAYOUT → tileAspect: pravougaona polja za široke logoe (tema ga postavlja sama).
+- Inspector → TEME: primena teme jednim klikom; "Kreiraj / dopuni brend teme" pravi assete iz Assets/Art/Brands (postojeće ne prepisuje).
+- Admin → TEMA: promena teme na licu mesta; u buildu se pamti posle restarta.
+- Raspored mreže izbegava nepotpun poslednji red kad god je razlika u veličini polja mala.
+
 ## 1.2.0 — 2026-10-05
 - ISPRAVKA (glavni uzrok "klik ne radi"): providna Attract TapArea nije primala klikove jer je u Unity 2022
   "Cull Transparent Mesh" podrazumevano uključen. Sada se isključuje u runtime-u (radi i na postojećoj sceni) i u Setup/Repair.

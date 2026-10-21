@@ -17,13 +17,15 @@ namespace SmartData.FindFake
         public SmartButton resume;
         public SmartButton newGame;
         public SmartButton language;
+        public SmartButton theme;
         public SmartButton export;
         public SmartButton resetStats;
         public SmartButton quit;
 
-        public void Bind(UnityAction onResume, UnityAction onNewGame, UnityAction onLanguage,
+        public void Bind(UnityAction onResume, UnityAction onNewGame, UnityAction onLanguage, UnityAction onTheme,
                          UnityAction onExport, UnityAction onReset, UnityAction onQuit)
         {
+            Wire(theme, onTheme);
             Wire(resume, onResume);
             Wire(newGame, onNewGame);
             Wire(language, onLanguage);
@@ -46,7 +48,7 @@ namespace SmartData.FindFake
             UiStyle.Text(title, app.typography, app.typography.adminSize * 1.6f, fontScale, app.visuals.textColor);
             UiStyle.Text(stats, app.typography, app.typography.adminSize, fontScale, app.visuals.textColor);
             UiStyle.Text(message, app.typography, app.typography.adminSize * 0.8f, fontScale, app.visuals.secondaryTextColor);
-            foreach (Button b in new Button[] { resume, newGame, language, export, resetStats })
+            foreach (Button b in new Button[] { resume, newGame, language, theme, export, resetStats })
                 UiStyle.Button(b, app.visuals, app.visuals.buttonColor, app.typography, fontScale);
             UiStyle.Button(quit, app.visuals, app.visuals.wrongColor, app.typography, fontScale);
         }
@@ -62,9 +64,15 @@ namespace SmartData.FindFake
             UiStyle.Label(quit, texts.adminQuit);
         }
 
-        public void Refresh(TextSet texts, MatchStats s, string msg, bool resetArmed, bool allowQuit, string version)
+        public void Refresh(TextSet texts, MatchStats s, string msg, bool resetArmed, bool allowQuit, string version, string themeName = null)
         {
             ApplyTexts(texts);
+            if (theme != null)
+            {
+                bool hasThemes = !string.IsNullOrEmpty(themeName);
+                if (theme.gameObject.activeSelf != hasThemes) theme.gameObject.SetActive(hasThemes);
+                UiStyle.Label(theme, UiStyle.Format(texts.adminTheme, themeName));
+            }
             UiStyle.Label(resetStats, resetArmed ? texts.adminResetConfirm : texts.adminReset);
             var sb = new StringBuilder();
             sb.Append(texts.statMatches).Append(": ").Append(s.matches).Append('\n');

@@ -12,7 +12,7 @@ namespace SmartData.FindFake
     {
         public string productName = "Pronađi pogrešan logo";
         public string companyName = "SmartData";
-        public string version = "1.2.0";
+        public string version = "1.3.0";
         [Min(1)] public int buildNumber = 1;
         public string bundleIdentifier = "com.smartdata.pronadjilogo";
     }
@@ -34,6 +34,10 @@ namespace SmartData.FindFake
     public class ContentBlock
     {
         public LogoDatabase logoDatabase;
+        [Tooltip("Dizajn teme (brendovi). Primena: dugme 'Primeni temu' u Inspectoru ili TEMA u admin ekranu.")]
+        public List<ThemePreset> themes = new List<ThemePreset>();
+        [Tooltip("-1 = bez teme (koriste se VISUALS podešavanja kakva jesu).")]
+        public int activeTheme = -1;
         public int activeLanguage;
         public List<TextSet> languages = new List<TextSet> { TextSet.Serbian(), TextSet.English() };
         [Tooltip("Na kraju runde prikaži opis greške iz LogoData.")]
@@ -86,6 +90,8 @@ namespace SmartData.FindFake
         [Min(0f)] public float boardPadding = 16f;
         [Min(0f)] public float tileSpacing = 18f;
         [Min(20f)] public float maxTileSize = 320f;
+        [Tooltip("Odnos širine i visine polja (1 = kvadrat). Za široke logoe (npr. Heineken) 2–3. Tema ga postavlja automatski.")]
+        [Range(0.5f, 4f)] public float tileAspect = 1f;
         public bool showDivider = true;
         [Min(0f)] public float dividerThickness = 6f;
     }

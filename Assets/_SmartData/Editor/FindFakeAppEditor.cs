@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using SmartData.FindFake.BuildTools;
 using SmartData.FindFake.Validation;
@@ -39,6 +40,7 @@ namespace SmartData.FindFake.EditorTools
             DrawHeaderBox(app);
             DrawPreview(app);
             DrawTools(app);
+            DrawThemes(app);
             DrawBuild(app);
 
             EditorGUILayout.Space(6f);
@@ -167,6 +169,46 @@ namespace SmartData.FindFake.EditorTools
                 EditorUtility.RevealInFinder(folder);
             }
             EditorGUILayout.EndHorizontal();
+        }
+
+        private static void DrawThemes(FindFakeApp app)
+        {
+            EditorGUILayout.Space(4f);
+            EditorGUILayout.LabelField("TEME (DIZAJN TEMPLEJTI)", EditorStyles.miniBoldLabel);
+            List<ThemePreset> themes = app.content.themes;
+            if (themes == null || themes.Count == 0)
+            {
+                EditorGUILayout.HelpBox("Nema tema. Klikni dole da se naprave Camel, Coca-Cola i Heineken teme iz Assets/Art/Brands.", MessageType.None);
+            }
+            else
+            {
+                ThemePreset active = app.ActiveTheme;
+                EditorGUILayout.LabelField("Aktivna: " + (active != null ? active.themeName : "bez teme (VISUALS ručno)"));
+                EditorGUILayout.BeginHorizontal();
+                for (int i = 0; i < themes.Count; i++)
+                {
+                    if (themes[i] == null) continue;
+                    GUI.backgroundColor = app.content.activeTheme == i ? new Color(0.6f, 0.85f, 1f) : Color.white;
+                    if (GUILayout.Button(themes[i].themeName))
+                    {
+                        Undo.RecordObject(app, "Apply Theme");
+                        int index = i;
+                        app.ApplyTheme(index);
+                        EditorUtility.SetDirty(app);
+                        Apply(app);
+                    }
+                    GUI.backgroundColor = Color.white;
+                }
+                EditorGUILayout.EndHorizontal();
+            }
+            using (new EditorGUI.DisabledScope(Application.isPlaying))
+            {
+                if (GUILayout.Button("Kreiraj / dopuni brend teme iz Assets/Art/Brands"))
+                {
+                    int added = BrandThemes.EnsureThemes(app);
+                    Debug.Log("[FindFake] Teme: " + app.content.themes.Count + " (novih " + added + ").");
+                }
+            }
         }
 
         private static void DrawBuild(FindFakeApp app)

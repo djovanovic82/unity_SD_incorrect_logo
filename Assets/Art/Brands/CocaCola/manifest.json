@@ -1,0 +1,152 @@
+{
+  "brand": "CocaCola",
+  "original": "CocaCola_original.png",
+  "background": "CocaCola_background.png",
+  "aspect": 2.024,
+  "rounds": [
+    {
+      "id": "cocacola_tanja",
+      "fake": "CocaCola_greska_tanja.png",
+      "description": "Slova su tanja"
+    },
+    {
+      "id": "cocacola_boja",
+      "fake": "CocaCola_greska_boja.png",
+      "description": "Crvena je narandžastija"
+    },
+    {
+      "id": "cocacola_ogledalo",
+      "fake": "CocaCola_greska_ogledalo.png",
+      "description": "Logo je u ogledalu"
+    },
+    {
+      "id": "cocacola_crtica",
+      "fake": "CocaCola_greska_crtica.png",
+      "description": "Nedostaje crtica između reči"
+    },
+    {
+      "id": "cocacola_nagib",
+      "fake": "CocaCola_greska_nagib.png",
+      "description": "Logo je blago nakrivljen"
+    },
+    {
+      "id": "cocacola_spljosten",
+      "fake": "CocaCola_greska_spljosten.png",
+      "description": "Logo je spljošten"
+    }
+  ],
+  "themeName": "Coca-Cola",
+  "tileAspect": 2.0,
+  "visuals": {
+    "backgroundColor": {
+      "r": 0.7098,
+      "g": 0.0,
+      "b": 0.1216,
+      "a": 1.0
+    },
+    "player1Accent": {
+      "r": 1.0,
+      "g": 1.0,
+      "b": 1.0,
+      "a": 1.0
+    },
+    "player2Accent": {
+      "r": 1.0,
+      "g": 1.0,
+      "b": 1.0,
+      "a": 1.0
+    },
+    "tileColor": {
+      "r": 1.0,
+      "g": 1.0,
+      "b": 1.0,
+      "a": 1.0
+    },
+    "tileFrameColor": {
+      "r": 0.3529,
+      "g": 0.0,
+      "b": 0.0627,
+      "a": 0.35
+    },
+    "tileFrameThickness": 5,
+    "tileIconPadding": 0.06,
+    "correctColor": {
+      "r": 0.1804,
+      "g": 0.8,
+      "b": 0.4431,
+      "a": 1.0
+    },
+    "wrongColor": {
+      "r": 0.102,
+      "g": 0.102,
+      "b": 0.102,
+      "a": 1.0
+    },
+    "revealColor": {
+      "r": 1.0,
+      "g": 0.7804,
+      "b": 0.1725,
+      "a": 1.0
+    },
+    "lockOverlayColor": {
+      "r": 0.0784,
+      "g": 0.0,
+      "b": 0.0,
+      "a": 0.55
+    },
+    "dividerColor": {
+      "r": 1.0,
+      "g": 1.0,
+      "b": 1.0,
+      "a": 0.0
+    },
+    "buttonColor": {
+      "r": 1.0,
+      "g": 1.0,
+      "b": 1.0,
+      "a": 1.0
+    },
+    "buttonTextColor": {
+      "r": 0.8941,
+      "g": 0.0,
+      "b": 0.1686,
+      "a": 1.0
+    },
+    "textColor": {
+      "r": 1.0,
+      "g": 1.0,
+      "b": 1.0,
+      "a": 1.0
+    },
+    "secondaryTextColor": {
+      "r": 1.0,
+      "g": 1.0,
+      "b": 1.0,
+      "a": 0.82
+    },
+    "hudColor": {
+      "r": 0.0,
+      "g": 0.0,
+      "b": 0.0,
+      "a": 0.45
+    },
+    "adminPanelColor": {
+      "r": 0.2353,
+      "g": 0.0,
+      "b": 0.0392,
+      "a": 0.97
+    }
+  },
+  "texts": [
+    {
+      "languageCode": "SR",
+      "title": "PRONAĐI POGREŠAN LOGO",
+      "subtitle": "Coca-Cola izazov – dodirni ekran za početak"
+    },
+    {
+      "languageCode": "EN",
+      "title": "FIND THE FAKE LOGO",
+      "subtitle": "Coca-Cola challenge – touch the screen to start"
+    }
+  ]
+}

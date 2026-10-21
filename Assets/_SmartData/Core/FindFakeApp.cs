@@ -125,6 +125,7 @@ namespace SmartData.FindFake
 
             lastScreenSize = new Vector2Int(Screen.width, Screen.height);
             ApplyAll(ResolveProfileIndex());
+            RestoreSavedTheme();
             EnterState(AppState.Attract, true);
         }
 
@@ -144,7 +145,7 @@ namespace SmartData.FindFake
             }
             if (refs.result != null) refs.result.Bind(OnPlayAgain);
             if (refs.admin != null)
-                refs.admin.Bind(OnAdminResume, OnAdminNewGame, OnAdminLanguage, OnAdminExport, OnAdminReset, OnAdminQuit);
+                refs.admin.Bind(OnAdminResume, OnAdminNewGame, OnAdminLanguage, OnAdminTheme, OnAdminExport, OnAdminReset, OnAdminQuit);
         }
 
         private void Update()
@@ -746,7 +747,7 @@ namespace SmartData.FindFake
         {
             if (refs.admin == null) return;
             MatchStats stats = store != null ? store.GetStats() : new MatchStats();
-            refs.admin.Refresh(Texts, stats, adminMessage, resetArmedUntil > 0f, admin.allowQuit, project.version);
+            refs.admin.Refresh(Texts, stats, adminMessage, resetArmedUntil > 0f, admin.allowQuit, project.version, ThemeLabel());
         }
 
         private void OnAdminResume()
@@ -923,7 +924,7 @@ namespace SmartData.FindFake
                     if (refs.admin != null)
                     {
                         var sample = new MatchStats { matches = 12, rounds = 41, player1Wins = 7, player2Wins = 5, averageReaction = 3.2f };
-                        refs.admin.Refresh(t, sample, "", false, admin.allowQuit, project.version);
+                        refs.admin.Refresh(t, sample, "", false, admin.allowQuit, project.version, ThemeLabel());
                     }
                     break;
             }
