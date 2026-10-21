@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd7bbbd508ebd46fba815d198091534a, type: 3}
+  m_Name: CocaCola_Logos
+  m_EditorClassIdentifier: 
+  logos:
+  - {fileID: 11400000, guid: bd6cf411386884bdb985bc3c69820969, type: 2}
+  - {fileID: 11400000, guid: 7dcea51e0e256462aa20e60fe4473fd5, type: 2}
+  - {fileID: 11400000, guid: a1ac48cf544124ba7a2e822fd85c50d0, type: 2}
+  - {fileID: 11400000, guid: 111e00e2af18e4666aab1cac1ff81192, type: 2}
+  - {fileID: 11400000, guid: d14484703b7f24fa999366212472d75a, type: 2}
+  - {fileID: 11400000, guid: 0b18114198f8145f1b31f31859bf87a9, type: 2}

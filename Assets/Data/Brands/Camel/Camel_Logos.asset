@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd7bbbd508ebd46fba815d198091534a, type: 3}
+  m_Name: Camel_Logos
+  m_EditorClassIdentifier: 
+  logos:
+  - {fileID: 11400000, guid: 95752d78727b04894b189a087256e9e1, type: 2}
+  - {fileID: 11400000, guid: c1344e2733d9540cfb47c9242927ca49, type: 2}
+  - {fileID: 11400000, guid: 30de3bbf46e724b2cb2bd0e12c44ea0c, type: 2}
+  - {fileID: 11400000, guid: 6d92ef604b4fb4bceaf9260a9d93a1eb, type: 2}
+  - {fileID: 11400000, guid: 9de31c2ed689443fab7197bcc9905274, type: 2}
+  - {fileID: 11400000, guid: 821da03a7591b4818a6c65d1bff81e00, type: 2}

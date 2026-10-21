@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd7bbbd508ebd46fba815d198091534a, type: 3}
+  m_Name: LogoDatabase
+  m_EditorClassIdentifier: 
+  logos:
+  - {fileID: 11400000, guid: 32a6cc2a8420b47b99b2b0097bb295ac, type: 2}
+  - {fileID: 11400000, guid: 4580950b2d013460ebb1ddf6508cf2f6, type: 2}
+  - {fileID: 11400000, guid: e95a601c2700441e5a264694033bf6cb, type: 2}
+  - {fileID: 11400000, guid: e010fdc29115f4d40b573b129af09247, type: 2}
+  - {fileID: 11400000, guid: 34d51ec31f551478e88909955e766fa6, type: 2}
+  - {fileID: 11400000, guid: 782daa5802c2a431b99e128e996f0d3f, type: 2}
+  - {fileID: 11400000, guid: 934e7c261284d4eaba246fa694476911, type: 2}

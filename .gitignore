@@ -15,3 +15,7 @@
 .vs/
 .idea/
 .DS_Store
+
+# Scene backups
+/Assets/_Backups/
+/Assets/_Backups.meta

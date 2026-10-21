@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd7bbbd508ebd46fba815d198091534a, type: 3}
+  m_Name: Heineken_Logos
+  m_EditorClassIdentifier: 
+  logos:
+  - {fileID: 11400000, guid: 08dbd59b30e614fbaa9e51b5641ffcf5, type: 2}
+  - {fileID: 11400000, guid: 0169d64fd771f41e9bca11247e39687f, type: 2}
+  - {fileID: 11400000, guid: efb5fd9472b7845afa1706720c5500c4, type: 2}
+  - {fileID: 11400000, guid: 68ef9e1f9e21b44c0badb569a4366e41, type: 2}
+  - {fileID: 11400000, guid: d0a2744ffa1804bb4a71e584f73066d6, type: 2}
+  - {fileID: 11400000, guid: 2b2dd7ba57d234069b2033759e719cc1, type: 2}
