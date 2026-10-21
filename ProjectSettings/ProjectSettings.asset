@@ -12,7 +12,7 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: DefaultCompany
+  companyName: SmartData
   productName: incorect_logo
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
