@@ -57,6 +57,27 @@ namespace SmartData.FindFake.EditorTools
         }
 
         /// <summary>Vraća broj tema dodatih u listu aplikacije.</summary>
+        /// <summary>
+        /// Bez dijaloga (batch build): kreira/dopunjuje teme i primenjuje temu čije ime sadrži <paramref name="name"/>
+        /// (npr. "Heineken") na SmartDataApp u otvorenoj sceni. Vraća false ako tema ili aplikacija nisu nađeni.
+        /// </summary>
+        public static bool ApplyByName(string name)
+        {
+            FindFakeApp app = UnityEngine.Object.FindObjectOfType<FindFakeApp>(true);
+            if (app == null) { Debug.LogWarning("[FindFake] ApplyByName: nema SmartDataApp u sceni."); return false; }
+            EnsureThemes(app);
+            List<ThemePreset> themes = app.content.themes;
+            int index = themes == null ? -1 : themes.FindIndex(t => t != null &&
+                ((t.themeName ?? "").IndexOf(name, StringComparison.OrdinalIgnoreCase) >= 0 || t.name.IndexOf(name, StringComparison.OrdinalIgnoreCase) >= 0));
+            if (index < 0) { Debug.LogWarning("[FindFake] ApplyByName: tema '" + name + "' nije nađena."); return false; }
+            Undo.RecordObject(app, "Apply Theme");
+            app.ApplyTheme(index);
+            EditorUtility.SetDirty(app);
+            UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(app.gameObject.scene);
+            Debug.Log("[FindFake] Primenjena tema: " + themes[index].themeName);
+            return true;
+        }
+
         public static int EnsureThemes(FindFakeApp app)
         {
             if (!AssetDatabase.IsValidFolder(BrandsFolder)) return 0;
