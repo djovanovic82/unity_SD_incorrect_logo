@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased — App icon
+
+- New SmartData app icon (`Art/Icon/AppIcon.png`, 1024 px): diagonal split, SmartData mark on white top-left, game motif bottom-right, magenta seam. Set as the Default Icon for all platforms (ProjectSettings + build tools).
+- Generator and logo in `Tools~/icon/` (`python3 Tools~/icon/make_icon.py Tools~/icon/smartdata_mark.png`).
+
 ## 1.3.0 — 2026-10-21
 - Dizajn teme (ThemePreset): Camel, Coca-Cola, Heineken – boje, pozadina (Cover, radi za landscape i portrait), polja, dugmad, naslovi SR/EN i sopstvena baza logoa.
 - Po brendu 6 rundi sa različitim greškama (boja, ogledalo, nagib, spljošten, deo koji nedostaje, brend-specifična greška).

@@ -68,6 +68,8 @@ namespace SmartData.FindFake.Validation
                 issues.Add(new Issue(Severity.Warning, "Otvorena scena nije " + FindFakeSetup.ScenePath + " (trenutno: " + scenePath + ")."));
             if (!EditorBuildSettings.scenes.Any(s => s.enabled && s.path == FindFakeSetup.ScenePath))
                 issues.Add(new Issue(Severity.Warning, "Main scena nije u Build Settings – build alat će je dodati."));
+            if (!System.Array.Exists(UnityEditor.PlayerSettings.GetIconsForTargetGroup(UnityEditor.BuildTargetGroup.Unknown) ?? new UnityEngine.Texture2D[0], t => t != null))
+                issues.Add(new Issue(Severity.Warning, "Nema default app ikonice (build postavlja Art/Icon/AppIcon.png)."));
 
             // ---- Reference ----
             SceneRefs r = app.refs;

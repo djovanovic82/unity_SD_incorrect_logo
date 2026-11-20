@@ -117,6 +117,7 @@ namespace SmartData.FindFake.BuildTools
             PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.Android, p.bundleIdentifier);
             PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.iOS, p.bundleIdentifier);
             PlayerSettings.runInBackground = app.kiosk.runInBackground;
+            FindFakeAppIcon.Apply();
 
             switch (target)
             {
