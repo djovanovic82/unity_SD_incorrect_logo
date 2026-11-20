@@ -5,7 +5,7 @@ Duel 1 na 1 za touch ekrane. Svaki igrač ima svoju tablu sa istim logoom ponovl
 - **Unity:** 2022.3.19f1 LTS
 - **Platforme:** Windows x64, Android (ARM64, IL2CPP), iPad (Xcode projekat)
 - **Scena:** jedna produkciona scena `Assets/Scenes/Main.unity`
-- **Verzija:** vidi `VERSION` i `CHANGELOG.md`
+- **Verzija:** vidi `VERSION.txt` i `CHANGELOG.md`
 
 ---
 

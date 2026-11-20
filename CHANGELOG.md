@@ -2,6 +2,7 @@
 
 ## Unreleased — App icon
 
+- `VERSION` renamed to `VERSION.txt`: on macOS a root file named `VERSION` is picked up by the Android NDK as the C++ `<version>` header and breaks the IL2CPP build.
 - New SmartData app icon (`Art/Icon/AppIcon.png`, 1024 px): diagonal split, SmartData mark on white top-left, game motif bottom-right, magenta seam. Set as the Default Icon for all platforms (ProjectSettings + build tools).
 - Generator and logo in `Tools~/icon/` (`python3 Tools~/icon/make_icon.py Tools~/icon/smartdata_mark.png`).
 
