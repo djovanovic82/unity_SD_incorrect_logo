@@ -31,7 +31,7 @@ namespace SmartData.UIStandard
         [Header("Backgrounds")]
         public bool coverBackgrounds = true;
         [Header("Skip objects whose name contains (case-insensitive)")]
-        public string[] excludeNames = { "Admin", "Debug", "Numbers" };
+        public string[] excludeNames = { "Admin", "Debug", "Numbers", "SDUISkip" };   // a game marks its own self-sized UI with "SDUISkip" in the object name
     }
 
 }
