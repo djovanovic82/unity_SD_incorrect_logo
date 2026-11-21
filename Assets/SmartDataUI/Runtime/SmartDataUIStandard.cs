@@ -195,6 +195,7 @@ namespace SmartData.UIStandard
                 string s = GetText(t);
                 if (string.IsNullOrEmpty(s) || Letters(s) < 2) continue;                   // numbers, scores, single letters keep their size
                 if (_s.uniformFont) SetFont(t, false);
+                FitWidthToCanvas(t, c);
                 if (_s.standardizeTexts)
                 {
                     float refSize = GetSize(t) / k;                                         // current size in reference units
@@ -204,6 +205,20 @@ namespace SmartData.UIStandard
                 }
                 if (_s.fixContrast) FixContrast(t, dark, screenLum);
             }
+        }
+
+
+        /// A fixed-width text box wider than the screen (e.g. built for landscape, shown in portrait) is narrowed so
+        /// its text wraps inside the screen instead of running off both edges.
+        static void FitWidthToCanvas(Component t, Canvas c)
+        {
+            var rt = t.transform as RectTransform; var root = c.transform as RectTransform;
+            if (rt == null || root == null || rt.anchorMin.x != rt.anchorMax.x) return;            // stretched boxes follow their parent
+            if (Mathf.Abs(rt.eulerAngles.z) > 1f && Mathf.Abs(rt.eulerAngles.z - 360f) > 1f) return;
+            float scale = rt.lossyScale.x / Mathf.Max(0.0001f, root.lossyScale.x);
+            if (scale <= 0.0001f) return;
+            float allowed = root.rect.width * 0.92f / scale;
+            if (rt.rect.width > allowed) rt.sizeDelta = new Vector2(rt.sizeDelta.x - (rt.rect.width - allowed), rt.sizeDelta.y);
         }
 
         Color DominantDarkText(Canvas c)
@@ -506,7 +521,7 @@ namespace SmartData.UIStandard
                 if (lt.horizontalOverflow != HorizontalWrapMode.Wrap) lt.horizontalOverflow = HorizontalWrapMode.Wrap;
                 return;
             }
-            if (SingleWord(GetText(t))) SetProp(t, "enableWordWrapping", false);
+            SetProp(t, "enableWordWrapping", !SingleWord(GetText(t)));
             SetProp(t, "enableAutoSizing", true);
             SetProp(t, "fontSizeMax", (float)s);
             SetProp(t, "fontSizeMin", (float)mn);
