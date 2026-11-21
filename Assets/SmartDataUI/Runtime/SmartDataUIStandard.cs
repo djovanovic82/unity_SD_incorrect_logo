@@ -1,0 +1,449 @@
+// SmartData UI Standard — one look for every SmartData game (reference: Memory, Heineken design).
+// Runs by itself in every scene (no scene setup needed) and keeps all screen-space UI on the same standard:
+//   • buttons with a text label: same size (360 x 88 at a 1920x1200 reference), same font size, bold
+//   • texts: one font, one size per role (title / subtitle / body), auto-fit so they never run out of their box
+//   • contrast: every text is the opposite of what is behind it (dark design colour on light, white on dark)
+//   • full-screen background images keep their aspect ratio (cover, no stretching)
+// Sizes scale with the short screen side, so a 1800x2880 tablet, 1920x1200 and 2880x1800 all look the same.
+// Settings: Resources/SmartDataUIStandardSettings (Assets > Create > SmartData > UI Standard Settings).
+// Exclude an object (and its children): add SmartDataUIStandardIgnore to it.
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace SmartData.UIStandard
+{
+    [DefaultExecutionOrder(10000)]
+    public class SmartDataUIStandard : MonoBehaviour
+    {
+        static SmartDataUIStandard _instance;
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+        static void Boot()
+        {
+            if (_instance != null) return;
+            var go = new GameObject("SmartData UI Standard");
+            go.hideFlags = HideFlags.DontSave;
+            DontDestroyOnLoad(go);
+            _instance = go.AddComponent<SmartDataUIStandard>();
+        }
+
+        SmartDataUIStandardSettings _s;
+        Font _font;
+        object _tmpFont; bool _tmpFontTried;
+        float _next;
+
+        void Awake()
+        {
+            _s = Resources.Load<SmartDataUIStandardSettings>("SmartDataUIStandardSettings");
+            if (_s == null) _s = ScriptableObject.CreateInstance<SmartDataUIStandardSettings>();
+            _font = _s.font != null ? _s.font : Resources.Load<Font>("SmartDataUI_Font");
+        }
+
+        void LateUpdate()
+        {
+            if (_s == null || !_s.enabled || Time.unscaledTime < _next) return;
+            _next = Time.unscaledTime + 0.25f;
+            try { Pass(); } catch (Exception e) { Debug.LogWarning("[SmartData UI Standard] " + e.Message); }
+        }
+
+        // ---------------------------------------------------------------- pass
+        void Pass()
+        {
+            float shortSide = Mathf.Max(1f, Mathf.Min(Screen.width, Screen.height));
+            foreach (Canvas c in FindObjectsOfType<Canvas>())
+            {
+                if (!c.isRootCanvas || c.renderMode == RenderMode.WorldSpace || !c.gameObject.activeInHierarchy) continue;
+                // reference units -> this canvas' units
+                float k = shortSide / _s.referenceShortSide / Mathf.Max(0.0001f, c.scaleFactor);
+                Color dark = _s.darkTextColor.a > 0.5f ? _s.darkTextColor : DominantDarkText(c);
+                if (dark.a < 0.5f) dark = new Color(0.1f, 0.1f, 0.1f, 1f);
+                float screenLum = ScreenBackgroundLum(c);
+
+                if (_s.coverBackgrounds) Backgrounds(c);
+                if (_s.standardizeButtons) Buttons(c, k);
+                if (_s.standardizeTexts || _s.uniformFont || _s.fixContrast) Texts(c, k, screenLum, dark);
+            }
+        }
+
+        bool Skip(Transform t)
+        {
+            for (Transform p = t; p != null; p = p.parent)
+            {
+                if (p.GetComponent<SmartDataUIStandardIgnore>() != null) return true;
+                string n = p.name;
+                foreach (string ex in _s.excludeNames)
+                    if (!string.IsNullOrEmpty(ex) && n.IndexOf(ex, StringComparison.OrdinalIgnoreCase) >= 0) return true;
+            }
+            return false;
+        }
+
+        // ---------------------------------------------------------------- buttons
+        bool IsLabelButton(Button b, out Component label)
+        {
+            label = null;
+            var img = b.targetGraphic as Graphic;
+            if (img == null || img.color.a < 0.05f) return false;                       // invisible tap zones
+            foreach (Component t in TextsIn(b.transform))
+            {
+                string s = GetText(t);
+                if (s != null && Letters(s) >= 3) { label = t; break; }
+            }
+            if (label == null) return false;                                            // icons, letter tiles, cards
+            var rt = (RectTransform)b.transform;
+            Rect r = rt.rect;
+            if (r.height <= 1f || r.width / r.height < 1.6f) return false;              // tiles / round buttons
+            var canvasRt = rt.root as RectTransform;
+            if (canvasRt != null && (r.width > canvasRt.rect.width * 0.6f || r.height > canvasRt.rect.height * 0.3f)) return false; // panels
+            return true;
+        }
+
+        void Buttons(Canvas c, float k)
+        {
+            Vector2 size = _s.buttonSize * k;
+            var byParent = new Dictionary<Transform, List<RectTransform>>();
+            foreach (Button b in c.GetComponentsInChildren<Button>(false))
+            {
+                if (Skip(b.transform)) continue;
+                Component label;
+                if (!IsLabelButton(b, out label)) continue;
+                var rt = (RectTransform)b.transform;
+                SetButtonSize(rt, size);
+                List<RectTransform> l;
+                if (!byParent.TryGetValue(rt.parent, out l)) byParent[rt.parent] = l = new List<RectTransform>();
+                l.Add(rt);
+                if (label != null)
+                {
+                    float fs = _s.buttonFontSize * k;
+                    SetFont(label, true);
+                    SetSize(label, fs, fs * _s.minShrink);
+                }
+            }
+            // buttons next to each other: never overlap after the resize
+            foreach (var kv in byParent)
+            {
+                var l = kv.Value; if (l.Count < 2) continue;
+                if (kv.Key.GetComponent<LayoutGroup>() != null) continue;
+                l.Sort((a, b2) => a.anchoredPosition.x.CompareTo(b2.anchoredPosition.x));
+                for (int i = 0; i + 1 < l.Count; i++)
+                {
+                    RectTransform a = l[i], b = l[i + 1];
+                    if (Mathf.Abs(Center(a).y - Center(b).y) > size.y * 0.8f) continue;     // different rows
+                    float dist = Mathf.Abs(Center(b).x - Center(a).x);
+                    float w = Mathf.Min(a.sizeDelta.x, dist - _s.buttonGap * k);
+                    if (w > 40f && w < a.sizeDelta.x) { a.sizeDelta = new Vector2(w, a.sizeDelta.y); b.sizeDelta = new Vector2(Mathf.Min(b.sizeDelta.x, w), b.sizeDelta.y); }
+                }
+            }
+        }
+
+        static Vector2 Center(RectTransform r)
+        {
+            Vector3 w = r.TransformPoint(r.rect.center);
+            return r.parent != null ? (Vector2)r.parent.InverseTransformPoint(w) : (Vector2)w;
+        }
+
+        void SetButtonSize(RectTransform rt, Vector2 size)
+        {
+            var parentLayout = rt.parent != null ? rt.parent.GetComponent<LayoutGroup>() : null;
+            if (parentLayout != null)
+            {
+                var le = rt.GetComponent<LayoutElement>();
+                if (le == null) le = rt.gameObject.AddComponent<LayoutElement>();
+                if (!Mathf.Approximately(le.preferredHeight, size.y)) { le.preferredHeight = size.y; le.minHeight = size.y; }
+                if (!Mathf.Approximately(le.preferredWidth, size.x)) { le.preferredWidth = size.x; le.minWidth = Mathf.Min(size.x, le.minWidth); }
+                return;
+            }
+            if (rt.anchorMin != rt.anchorMax)
+            {
+                // stretched button: pin it to its current centre so it can take the fixed standard size
+                var parent = rt.parent as RectTransform;
+                if (parent == null) return;
+                Vector2 c = Center(rt);
+                Rect pr = parent.rect;
+                Vector2 a = new Vector2((c.x - pr.xMin) / Mathf.Max(1f, pr.width), (c.y - pr.yMin) / Mathf.Max(1f, pr.height));
+                rt.anchorMin = rt.anchorMax = a; rt.pivot = new Vector2(0.5f, 0.5f); rt.anchoredPosition = Vector2.zero;
+            }
+            if ((rt.sizeDelta - size).sqrMagnitude > 0.25f) rt.sizeDelta = size;
+        }
+
+        // ---------------------------------------------------------------- texts
+        void Texts(Canvas c, float k, float screenLum, Color dark)
+        {
+            foreach (Component t in TextsIn(c.transform))
+            {
+                if (!((Behaviour)t).isActiveAndEnabled || Skip(t.transform)) continue;
+                if (t.GetComponentInParent<Button>() != null) continue;                    // done with the buttons
+                string s = GetText(t);
+                if (string.IsNullOrEmpty(s) || Letters(s) < 2) continue;                   // numbers, scores, single letters keep their size
+                if (_s.uniformFont) SetFont(t, false);
+                if (_s.standardizeTexts)
+                {
+                    float refSize = GetSize(t) / k;                                         // current size in reference units
+                    float target = refSize >= _s.titleFrom ? _s.titleFontSize : refSize >= _s.subtitleFrom ? _s.subtitleFontSize : _s.bodyFontSize;
+                    if (refSize >= _s.titleFrom) SetBold(t, true);
+                    SetSize(t, target * k, target * k * _s.minShrink);
+                }
+                if (_s.fixContrast) FixContrast(t, dark, screenLum);
+            }
+        }
+
+        Color DominantDarkText(Canvas c)
+        {
+            int dark = 0, light = 0; var counts = new Dictionary<Color32, int>();
+            foreach (Component t in TextsIn(c.transform))
+            {
+                if (!((Behaviour)t).isActiveAndEnabled || t.GetComponentInParent<Button>() != null) continue;
+                Color col = GetColor(t);
+                float l = Lum(col);
+                if (l < 0.35f) { dark++; Color32 k = col; int n; counts.TryGetValue(k, out n); counts[k] = n + 1; }
+                else if (l > 0.75f) light++;
+            }
+            if (dark == 0 || dark < light) return new Color(0, 0, 0, 0);                   // dark design: nothing to fix
+            Color32 best = default(Color32); int bn = -1;
+            foreach (var kv in counts) if (kv.Value > bn) { bn = kv.Value; best = kv.Key; }
+            Color r = best; r.a = 1f; return r;
+        }
+
+        /// White text on a light background (its nearest visible panel, else the screen background) gets the dark design colour.
+        void FixContrast(Component t, Color dark, float screenLum)
+        {
+            Color cur = GetColor(t);
+            float bg = PanelLum(t.transform);
+            if (bg < 0f) bg = screenLum;
+            if (bg < 0f) return;                                                             // unknown background (3D / sprite world)
+            float tl = Lum(cur);
+            if (tl > 0.62f && bg > 0.62f) SetColor(t, new Color(dark.r, dark.g, dark.b, cur.a));        // light on light -> dark
+            else if (tl < 0.38f && bg < 0.38f) SetColor(t, new Color(1f, 1f, 1f, cur.a));              // dark on dark -> white
+            else if (Mathf.Abs(tl - bg) < 0.3f) SetColor(t, bg > 0.5f ? new Color(dark.r, dark.g, dark.b, cur.a) : new Color(1f, 1f, 1f, cur.a)); // too close
+        }
+
+        /// Luminance of the nearest visible panel behind the text (-1 = none).
+        static float PanelLum(Transform t)
+        {
+            for (Transform p = t.parent; p != null; p = p.parent)
+            {
+                var cv = p.GetComponent<Canvas>();
+                if (cv != null && cv.isRootCanvas) break;
+                var g = p.GetComponent<Graphic>();
+                if (g == null || g is Text || !g.enabled || g.color.a < 0.5f || g.GetType().Name.Contains("TextMeshPro")) continue;
+                float l = GraphicLum(g);
+                if (l >= 0f) return l;
+            }
+            return -1f;
+        }
+
+        /// The back-most full-screen image of the canvas, else the camera colour (-1 = unknown, e.g. a 3D/sprite world).
+        float ScreenBackgroundLum(Canvas c)
+        {
+            var root = c.transform as RectTransform;
+            if (root != null)
+                foreach (Graphic g in c.GetComponentsInChildren<Graphic>(false))
+                {
+                    if (!(g is Image) && !(g is RawImage)) continue;
+                    Rect r = g.rectTransform.rect;
+                    if (r.width < root.rect.width * 0.9f || r.height < root.rect.height * 0.9f || g.color.a < 0.5f) continue;
+                    float l = GraphicLum(g);
+                    if (l >= 0f) return l;
+                }
+            Camera cam = Camera.main;
+            if (cam != null && cam.clearFlags == CameraClearFlags.SolidColor) return Lum(cam.backgroundColor);
+            return -1f;
+        }
+
+        static readonly Dictionary<string, float> _lumCache = new Dictionary<string, float>();
+
+        /// Visible luminance of an Image / RawImage: colour x average of its texture (read through the GPU, works for
+        /// textures that are not readable). -1 = mostly transparent.
+        static float GraphicLum(Graphic g)
+        {
+            Texture tex = null; Rect uv = new Rect(0, 0, 1, 1);
+            var im = g as Image;
+            if (im != null && im.sprite != null)
+            {
+                tex = im.sprite.texture;
+                Rect tr = im.sprite.textureRect;
+                if (tex != null) uv = new Rect(tr.x / tex.width, tr.y / tex.height, tr.width / tex.width, tr.height / tex.height);
+            }
+            var raw = g as RawImage;
+            if (raw != null) { tex = raw.texture; uv = raw.uvRect; }
+            float texLum = 1f;
+            if (tex != null)
+            {
+                texLum = TexLum(tex, uv);
+                if (texLum < 0f) return -1f;
+            }
+            return Lum(g.color) * texLum;
+        }
+
+        static float TexLum(Texture tex, Rect uv)
+        {
+            string key = tex.GetInstanceID() + ":" + uv.x.ToString("0.000") + ":" + uv.y.ToString("0.000") + ":" + uv.width.ToString("0.000");
+            float v;
+            if (_lumCache.TryGetValue(key, out v)) return v;
+            v = 1f;
+            RenderTexture rt = RenderTexture.GetTemporary(8, 8, 0, RenderTextureFormat.ARGB32);
+            RenderTexture prev = RenderTexture.active;
+            Texture2D read = null;
+            try
+            {
+                Graphics.Blit(tex, rt, new Vector2(uv.width, uv.height), new Vector2(uv.x, uv.y));
+                RenderTexture.active = rt;
+                read = new Texture2D(8, 8, TextureFormat.RGBA32, false);
+                read.ReadPixels(new Rect(0, 0, 8, 8), 0, 0);
+                read.Apply();
+                float sum = 0f, wsum = 0f;
+                foreach (Color px in read.GetPixels()) { sum += Lum(px) * px.a; wsum += px.a; }
+                v = wsum < 64f * 0.3f ? -1f : sum / wsum;
+            }
+            catch (Exception) { v = 1f; }
+            finally
+            {
+                RenderTexture.active = prev;
+                RenderTexture.ReleaseTemporary(rt);
+                if (read != null) Destroy(read);
+            }
+            _lumCache[key] = v;
+            return v;
+        }
+
+        // ---------------------------------------------------------------- backgrounds
+        void Backgrounds(Canvas c)
+        {
+            var root = c.transform as RectTransform; if (root == null) return;
+            Rect cr = root.rect;
+            foreach (Graphic g in c.GetComponentsInChildren<Graphic>(false))
+            {
+                if (!(g is Image) && !(g is RawImage)) continue;
+                if (Skip(g.transform)) continue;
+                var rt = g.rectTransform; Rect r = rt.rect;
+                if (r.width < cr.width * 0.9f || r.height < cr.height * 0.9f) continue;    // only full-screen images
+                float aspect = 0f;
+                var im = g as Image;
+                if (im != null)
+                {
+                    if (im.sprite == null || im.type == Image.Type.Sliced || im.type == Image.Type.Tiled) continue;
+                    aspect = im.sprite.rect.width / Mathf.Max(1f, im.sprite.rect.height);
+                    im.preserveAspect = false;
+                }
+                else
+                {
+                    var raw = (RawImage)g; if (raw.texture == null) continue;
+                    aspect = raw.texture.width / Mathf.Max(1f, (float)raw.texture.height);
+                }
+                if (aspect <= 0f || rt.parent == null || rt.parent.GetComponent<LayoutGroup>() != null) continue;
+                var fit = rt.GetComponent<AspectRatioFitter>();
+                if (fit == null) fit = rt.gameObject.AddComponent<AspectRatioFitter>();
+                if (fit.aspectMode != AspectRatioFitter.AspectMode.EnvelopeParent) fit.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent;
+                if (Mathf.Abs(fit.aspectRatio - aspect) > 0.001f) fit.aspectRatio = aspect;
+            }
+        }
+
+        // ---------------------------------------------------------------- text helpers (legacy Text + TextMeshPro via reflection)
+        static Type _tmpType;
+        static bool _tmpLooked;
+        static Type TmpType()
+        {
+            if (_tmpLooked) return _tmpType;
+            _tmpLooked = true;
+            foreach (Assembly a in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                Type t = a.GetType("TMPro.TMP_Text");
+                if (t != null) { _tmpType = t; break; }
+            }
+            return _tmpType;
+        }
+
+        static IEnumerable<Component> TextsIn(Transform root)
+        {
+            foreach (Text t in root.GetComponentsInChildren<Text>(false)) yield return t;
+            Type tmp = TmpType();
+            if (tmp != null) foreach (Component t in root.GetComponentsInChildren(tmp, false)) yield return t;
+        }
+
+        static object Prop(Component c, string name) { var p = c.GetType().GetProperty(name); return p != null ? p.GetValue(c, null) : null; }
+        static void SetProp(Component c, string name, object v)
+        {
+            var p = c.GetType().GetProperty(name);
+            if (p == null || !p.CanWrite) return;
+            object cur = p.GetValue(c, null);
+            if (cur != null && cur.Equals(v)) return;
+            p.SetValue(c, v, null);
+        }
+
+        static string GetText(Component t) { var lt = t as Text; return lt != null ? lt.text : Prop(t, "text") as string; }
+        static Color GetColor(Component t) { var g = t as Graphic; return g != null ? g.color : Color.white; }
+        static void SetColor(Component t, Color c) { var g = t as Graphic; if (g != null && g.color != c) g.color = c; }
+
+        static float GetSize(Component t)
+        {
+            var lt = t as Text;
+            if (lt != null) return lt.resizeTextForBestFit ? Mathf.Max(lt.fontSize, lt.resizeTextMaxSize) : lt.fontSize;
+            object auto = Prop(t, "enableAutoSizing");
+            if (auto is bool && (bool)auto) { object mx = Prop(t, "fontSizeMax"); if (mx is float) return (float)mx; }
+            object fs = Prop(t, "fontSize"); return fs is float ? (float)fs : 30f;
+        }
+
+        void SetSize(Component t, float size, float min)
+        {
+            int s = Mathf.Max(8, Mathf.RoundToInt(size)), mn = Mathf.Max(8, Mathf.RoundToInt(min));
+            var lt = t as Text;
+            if (lt != null)
+            {
+                if (lt.fontSize != s) lt.fontSize = s;
+                if (!lt.resizeTextForBestFit) lt.resizeTextForBestFit = true;
+                if (lt.resizeTextMaxSize != s) lt.resizeTextMaxSize = s;
+                if (lt.resizeTextMinSize != mn) lt.resizeTextMinSize = mn;
+                if (lt.verticalOverflow != VerticalWrapMode.Truncate) lt.verticalOverflow = VerticalWrapMode.Truncate;   // best fit needs a box
+                if (lt.horizontalOverflow != HorizontalWrapMode.Wrap) lt.horizontalOverflow = HorizontalWrapMode.Wrap;
+                return;
+            }
+            SetProp(t, "enableAutoSizing", true);
+            SetProp(t, "fontSizeMax", (float)s);
+            SetProp(t, "fontSizeMin", (float)mn);
+            SetProp(t, "fontSize", (float)s);
+        }
+
+        void SetBold(Component t, bool bold)
+        {
+            var lt = t as Text;
+            if (lt != null) { if (bold && lt.fontStyle != FontStyle.Bold) lt.fontStyle = FontStyle.Bold; return; }
+            var p = t.GetType().GetProperty("fontStyle");
+            if (p == null) return;
+            int cur = Convert.ToInt32(p.GetValue(t, null));
+            if (bold && (cur & 1) == 0) p.SetValue(t, Enum.ToObject(p.PropertyType, cur | 1), null);
+        }
+
+        void SetFont(Component t, bool bold)
+        {
+            if (!_s.uniformFont || _font == null) { if (bold) SetBold(t, true); return; }
+            var lt = t as Text;
+            if (lt != null)
+            {
+                if (lt.font != _font) lt.font = _font;
+                if (bold) SetBold(t, true);
+                return;
+            }
+            object fa = TmpFont();
+            if (fa != null) { var p = t.GetType().GetProperty("font"); if (p != null && p.GetValue(t, null) != fa) p.SetValue(t, fa, null); }
+            if (bold) SetBold(t, true);
+        }
+
+        object TmpFont()
+        {
+            if (_tmpFontTried) return _tmpFont;
+            _tmpFontTried = true;
+            Type tmp = TmpType(); if (tmp == null || _font == null) return null;
+            Type fa = tmp.Assembly.GetType("TMPro.TMP_FontAsset");
+            if (fa == null) return null;
+            MethodInfo m = fa.GetMethod("CreateFontAsset", BindingFlags.Public | BindingFlags.Static, null, new[] { typeof(Font) }, null);
+            try { _tmpFont = m != null ? m.Invoke(null, new object[] { _font }) : null; }
+            catch (Exception) { _tmpFont = null; }
+            return _tmpFont;
+        }
+
+        static int Letters(string s) { int n = 0; foreach (char ch in s) if (char.IsLetter(ch)) n++; return n; }
+        static float Lum(Color c) { return c.r * 0.299f + c.g * 0.587f + c.b * 0.114f; }
+    }
+}
