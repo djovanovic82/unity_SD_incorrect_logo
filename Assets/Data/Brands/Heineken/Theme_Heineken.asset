@@ -15,28 +15,28 @@ MonoBehaviour:
   themeName: Heineken
   logoDatabase: {fileID: 11400000, guid: bce95778587d04d69a4382bb6f7d55c8, type: 2}
   visuals:
-    backgroundColor: {r: 0, g: 0.2275, b: 0.1059, a: 1}
+    backgroundColor: {r: 0.9608, g: 0.9686, b: 0.9412, a: 1}
     backgroundSprite: {fileID: 21300000, guid: b451a1412e5e54b86a068482be1f9637, type: 3}
     backgroundFit: 0
-    player1Accent: {r: 1, g: 1, b: 1, a: 1}
-    player2Accent: {r: 1, g: 1, b: 1, a: 1}
+    player1Accent: {r: 0, g: 0.4078, b: 0.2392, a: 1}
+    player2Accent: {r: 0.9373, g: 0.1373, b: 0.2353, a: 1}
     tileSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
     tileColor: {r: 1, g: 1, b: 1, a: 1}
-    tileFrameColor: {r: 1, g: 1, b: 1, a: 0.22}
+    tileFrameColor: {r: 0, g: 0.4078, b: 0.2392, a: 0.35}
     tileFrameThickness: 5
     tileIconPadding: 0.05
     correctColor: {r: 0.4941, g: 0.851, b: 0.3412, a: 1}
     wrongColor: {r: 0.8902, g: 0.0235, b: 0.0745, a: 1}
     revealColor: {r: 1, g: 0.8196, b: 0, a: 1}
-    lockOverlayColor: {r: 0.4706, g: 0, b: 0, a: 0.5}
-    dividerColor: {r: 1, g: 1, b: 1, a: 0.35}
+    lockOverlayColor: {r: 0.9373, g: 0.1373, b: 0.2353, a: 0.35}
+    dividerColor: {r: 0, g: 0.4078, b: 0.2392, a: 0.35}
     buttonSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-    buttonColor: {r: 1, g: 1, b: 1, a: 1}
-    buttonTextColor: {r: 0, g: 0.5176, b: 0.2392, a: 1}
-    textColor: {r: 1, g: 1, b: 1, a: 1}
-    secondaryTextColor: {r: 1, g: 1, b: 1, a: 0.78}
-    hudColor: {r: 0, g: 0, b: 0, a: 0.3}
-    adminPanelColor: {r: 0, g: 0.1176, b: 0.0549, a: 0.97}
+    buttonColor: {r: 0, g: 0.4078, b: 0.2392, a: 1}
+    buttonTextColor: {r: 1, g: 1, b: 1, a: 1}
+    textColor: {r: 0, g: 0.3255, b: 0.2118, a: 1}
+    secondaryTextColor: {r: 0.2745, g: 0.4353, b: 0.3451, a: 1}
+    hudColor: {r: 1, g: 1, b: 1, a: 0.7}
+    adminPanelColor: {r: 0.9098, g: 0.9255, b: 0.898, a: 0.97}
     circleSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   font: {fileID: 0}
   tileAspect: 3.2
