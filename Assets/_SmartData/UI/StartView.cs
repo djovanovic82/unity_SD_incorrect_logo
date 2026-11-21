@@ -55,6 +55,16 @@ namespace SmartData.FindFake
                 UiStyle.Text(h.hint, app.typography, app.typography.subtitleSize, fontScale, app.visuals.secondaryTextColor);
                 UiStyle.Text(h.status, app.typography, app.typography.subtitleSize, fontScale, app.visuals.secondaryTextColor);
                 UiStyle.Button(h.button, app.visuals, accent, app.typography, fontScale);
+                Transform c = h.playerName != null ? h.playerName.transform.parent : null;
+                UiStyle.BrandLogo(c, app.visuals.brandLogo, new Vector2(0.25f, 0.82f), new Vector2(0.75f, 0.97f));
+                UiStyle.Anchors(h.playerName != null ? h.playerName.rectTransform : null, new Vector2(0.05f, 0.62f), new Vector2(0.95f, 0.80f));
+                UiStyle.Anchors(h.hint != null ? h.hint.rectTransform : null, new Vector2(0.05f, 0.50f), new Vector2(0.95f, 0.62f));
+                UiStyle.Anchors(h.status != null ? h.status.rectTransform : null, new Vector2(0.05f, 0.05f), new Vector2(0.95f, 0.20f));
+                if (h.button != null)
+                {
+                    var br = (RectTransform)h.button.transform;
+                    br.anchorMin = br.anchorMax = new Vector2(0.5f, 0.34f); br.anchoredPosition = Vector2.zero;
+                }
             }
         }
 

@@ -35,6 +35,14 @@ namespace SmartData.FindFake
             {
                 UiStyle.Text(h.title, app.typography, app.typography.titleSize, fontScale, app.visuals.textColor);
                 UiStyle.Text(h.subtitle, app.typography, app.typography.subtitleSize, fontScale, app.visuals.secondaryTextColor);
+                // brand on top, title, then the call to action (same order as every SmartData start screen)
+                Transform c = h.title != null ? h.title.transform.parent : null;
+                UiStyle.BrandLogo(c, app.visuals.brandLogo, new Vector2(0.25f, 0.76f), new Vector2(0.75f, 0.95f));
+                if (app.visuals.brandLogo != null)
+                {
+                    UiStyle.Anchors(h.title != null ? h.title.rectTransform : null, new Vector2(0.04f, 0.46f), new Vector2(0.96f, 0.74f));
+                    UiStyle.Anchors(h.subtitle != null ? h.subtitle.rectTransform : null, new Vector2(0.08f, 0.14f), new Vector2(0.92f, 0.44f));
+                }
             }
             if (tapArea != null)
             {

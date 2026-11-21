@@ -129,6 +129,8 @@ namespace SmartData.FindFake
         public Color hudColor = new Color(0f, 0f, 0f, 0.35f);
         public Color adminPanelColor = new Color(0.1f, 0.11f, 0.14f, 0.97f);
         public Sprite circleSprite;
+        [Tooltip("Brend logo na početnom ekranu i ekranu spremnosti (prazno = bez logoa).")]
+        public Sprite brandLogo;
     }
 
     [Serializable]

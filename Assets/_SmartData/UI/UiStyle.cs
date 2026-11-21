@@ -41,6 +41,44 @@ namespace SmartData.FindFake
             }
             TMP_Text label = button.GetComponentInChildren<TMP_Text>(true);
             Text(label, typography, typography.buttonSize, scale, visuals.buttonTextColor);
+            if (label != null) label.enableWordWrapping = false;
+            StandardSize(button.transform as RectTransform, scale);
+        }
+
+        /// SmartData standard button: 360x88 (at the 1200-unit short side), kept centred where the old box was.
+        public static void StandardSize(RectTransform rt, float scale)
+        {
+            if (rt == null || rt.parent == null || rt.parent.GetComponent<LayoutGroup>() != null) return;
+            if (rt.anchorMin != rt.anchorMax)
+            {
+                Vector2 c = (rt.anchorMin + rt.anchorMax) * 0.5f;
+                rt.anchorMin = rt.anchorMax = c;
+                rt.pivot = new Vector2(0.5f, 0.5f);
+                rt.anchoredPosition = Vector2.zero;
+            }
+            Vector2 size = new Vector2(360f, 88f) * Mathf.Max(0.5f, scale);
+            if ((rt.sizeDelta - size).sqrMagnitude > 0.25f) rt.sizeDelta = size;
+        }
+
+        /// Brand logo image under a screen half (created once), placed in the given box.
+        public static void BrandLogo(Transform parent, Sprite logo, Vector2 min, Vector2 max)
+        {
+            if (parent == null) return;
+            Transform t = parent.Find("BrandLogo");
+            if (logo == null) { if (t != null) t.gameObject.SetActive(false); return; }
+            Image img;
+            if (t == null)
+            {
+                var go = new GameObject("BrandLogo", typeof(RectTransform), typeof(Image));
+                go.layer = parent.gameObject.layer;
+                go.transform.SetParent(parent, false);
+                img = go.GetComponent<Image>();
+            }
+            else img = t.GetComponent<Image>();
+            img.gameObject.SetActive(true);
+            img.sprite = logo; img.preserveAspect = true; img.raycastTarget = false; img.color = Color.white;
+            var rt = img.rectTransform;
+            rt.anchorMin = min; rt.anchorMax = max; rt.offsetMin = rt.offsetMax = Vector2.zero;
         }
 
         public static void Label(Button button, string value)

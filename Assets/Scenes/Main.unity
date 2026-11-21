@@ -490,14 +490,14 @@ MonoBehaviour:
     circleSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   typography:
     font: {fileID: 0}
-    titleSize: 84
-    subtitleSize: 40
+    titleSize: 72
+    subtitleSize: 34
     nameSize: 30
-    statusSize: 44
-    scoreSize: 56
-    buttonSize: 40
-    lockSize: 48
-    resultSize: 110
+    statusSize: 34
+    scoreSize: 48
+    buttonSize: 32
+    lockSize: 40
+    resultSize: 72
     adminSize: 32
     autoSizeMinRatio: 0.45
   animations:
