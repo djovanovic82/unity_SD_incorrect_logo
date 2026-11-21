@@ -1,0 +1,152 @@
+{
+  "brand": "Intesa",
+  "original": "Intesa_original.png",
+  "background": "Intesa_background.png",
+  "aspect": 3.711,
+  "rounds": [
+    {
+      "id": "intesa_ogledalo",
+      "fake": "Intesa_greska_ogledalo.png",
+      "description": "Logo je u ogledalu"
+    },
+    {
+      "id": "intesa_nagib",
+      "fake": "Intesa_greska_nagib.png",
+      "description": "Logo je blago nakrivljen"
+    },
+    {
+      "id": "intesa_spljosten",
+      "fake": "Intesa_greska_spljosten.png",
+      "description": "Logo je spljošten"
+    },
+    {
+      "id": "intesa_boja",
+      "fake": "Intesa_greska_boja.png",
+      "description": "Zelena je postala plava"
+    },
+    {
+      "id": "intesa_znak",
+      "fake": "Intesa_greska_znak.png",
+      "description": "Nedostaje znak sa lukovima"
+    },
+    {
+      "id": "intesa_podnaslov",
+      "fake": "Intesa_greska_podnaslov.png",
+      "description": "Nedostaje „Intesa Sanpaolo Group\""
+    }
+  ],
+  "themeName": "Banca Intesa",
+  "tileAspect": 3.2,
+  "visuals": {
+    "backgroundColor": {
+      "r": 0.0209,
+      "g": 0.1884,
+      "b": 0.0963,
+      "a": 1.0
+    },
+    "player1Accent": {
+      "r": 1.0,
+      "g": 1.0,
+      "b": 1.0,
+      "a": 1.0
+    },
+    "player2Accent": {
+      "r": 1.0,
+      "g": 1.0,
+      "b": 1.0,
+      "a": 1.0
+    },
+    "tileColor": {
+      "r": 1.0,
+      "g": 1.0,
+      "b": 1.0,
+      "a": 1.0
+    },
+    "tileFrameColor": {
+      "r": 1.0,
+      "g": 1.0,
+      "b": 1.0,
+      "a": 0.22
+    },
+    "tileFrameThickness": 5,
+    "tileIconPadding": 0.05,
+    "correctColor": {
+      "r": 0.2634,
+      "g": 0.8334,
+      "b": 0.5199,
+      "a": 1.0
+    },
+    "wrongColor": {
+      "r": 0.7858,
+      "g": 0.5884,
+      "b": 0.1279,
+      "a": 1.0
+    },
+    "revealColor": {
+      "r": 1.0,
+      "g": 0.8196,
+      "b": 0.0,
+      "a": 1.0
+    },
+    "lockOverlayColor": {
+      "r": 0.6536,
+      "g": 0.4894,
+      "b": 0.1064,
+      "a": 0.5
+    },
+    "dividerColor": {
+      "r": 1.0,
+      "g": 1.0,
+      "b": 1.0,
+      "a": 0.35
+    },
+    "buttonColor": {
+      "r": 1.0,
+      "g": 1.0,
+      "b": 1.0,
+      "a": 1.0
+    },
+    "buttonTextColor": {
+      "r": 0.0314,
+      "g": 0.2824,
+      "b": 0.1451,
+      "a": 1.0
+    },
+    "textColor": {
+      "r": 1.0,
+      "g": 1.0,
+      "b": 1.0,
+      "a": 1.0
+    },
+    "secondaryTextColor": {
+      "r": 1.0,
+      "g": 1.0,
+      "b": 1.0,
+      "a": 0.78
+    },
+    "hudColor": {
+      "r": 0.0,
+      "g": 0.0,
+      "b": 0.0,
+      "a": 0.3
+    },
+    "adminPanelColor": {
+      "r": 0.0108,
+      "g": 0.0974,
+      "b": 0.0498,
+      "a": 0.97
+    }
+  },
+  "texts": [
+    {
+      "languageCode": "SR",
+      "title": "PRONAĐI POGREŠAN LOGO",
+      "subtitle": "Banca Intesa izazov – dodirni ekran za početak"
+    },
+    {
+      "languageCode": "EN",
+      "title": "FIND THE FAKE LOGO",
+      "subtitle": "Banca Intesa challenge – touch the screen to start"
+    }
+  ]
+}
