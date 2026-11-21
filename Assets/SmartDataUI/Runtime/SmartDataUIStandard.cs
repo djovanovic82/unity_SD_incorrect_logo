@@ -40,7 +40,10 @@ namespace SmartData.UIStandard
         {
             _s = Resources.Load<SmartDataUIStandardSettings>("SmartDataUIStandardSettings");
             if (_s == null) _s = ScriptableObject.CreateInstance<SmartDataUIStandardSettings>();
-            _font = _s.font != null ? _s.font : Resources.Load<Font>("SmartDataUI_Font");
+            // one font everywhere: the settings font, else Unity's built-in Arial (LegacyRuntime) — the look most games already have
+            _font = _s.font;
+            if (_font == null) { try { _font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf"); } catch (Exception) { } }
+            if (_font == null) _font = Resources.Load<Font>("SmartDataUI_Font");
         }
 
         void LateUpdate()
@@ -426,8 +429,6 @@ namespace SmartData.UIStandard
                 if (bold) SetBold(t, true);
                 return;
             }
-            object fa = TmpFont();
-            if (fa != null) { var p = t.GetType().GetProperty("font"); if (p != null && p.GetValue(t, null) != fa) p.SetValue(t, fa, null); }
             if (bold) SetBold(t, true);
         }
 
