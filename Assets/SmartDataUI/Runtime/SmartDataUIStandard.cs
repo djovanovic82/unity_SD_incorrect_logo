@@ -24,6 +24,7 @@ namespace SmartData.UIStandard
         static void Boot()
         {
             if (_instance != null) return;
+            if (Array.IndexOf(Environment.GetCommandLineArgs(), "-sdui-off") >= 0) return;   // compare: start the player with -sdui-off
             var go = new GameObject("SmartData UI Standard");
             go.hideFlags = HideFlags.DontSave;
             DontDestroyOnLoad(go);
