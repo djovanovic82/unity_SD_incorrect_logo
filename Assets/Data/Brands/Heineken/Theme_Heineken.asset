@@ -30,7 +30,7 @@ MonoBehaviour:
     revealColor: {r: 1, g: 0.8196, b: 0, a: 1}
     lockOverlayColor: {r: 0.9373, g: 0.1373, b: 0.2353, a: 0.35}
     dividerColor: {r: 0, g: 0.4078, b: 0.2392, a: 0.35}
-    buttonSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+    buttonSprite: {fileID: 21300000, guid: 72875aaeff44f32edc156c0427678306, type: 3}
     buttonColor: {r: 0, g: 0.4078, b: 0.2392, a: 1}
     buttonTextColor: {r: 1, g: 1, b: 1, a: 1}
     textColor: {r: 0, g: 0.3255, b: 0.2118, a: 1}
@@ -38,7 +38,7 @@ MonoBehaviour:
     hudColor: {r: 1, g: 1, b: 1, a: 0.7}
     adminPanelColor: {r: 0.9098, g: 0.9255, b: 0.898, a: 0.97}
     circleSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-    brandLogo: {fileID: 21300000, guid: 8658ad6f744ef4129a200cb1845b5dfe, type: 3}
+    brandLogo: {fileID: 21300000, guid: ff09b58e4b74cdffd5103cbd62b695d6, type: 3}
   font: {fileID: 0}
   tileAspect: 3.2
   texts:
