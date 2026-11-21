@@ -67,7 +67,7 @@ namespace SmartData.UIStandard
                 float screenLum = ScreenBackgroundLum(c);
 
                 if (_s.coverBackgrounds) Backgrounds(c);
-                if (_s.standardizeButtons) Buttons(c, k);
+                if (_s.standardizeButtons || _s.fixContrast) Buttons(c, k, dark);
                 if (_s.standardizeTexts || _s.uniformFont || _s.fixContrast) Texts(c, k, screenLum, dark);
             }
         }
@@ -104,7 +104,7 @@ namespace SmartData.UIStandard
             return true;
         }
 
-        void Buttons(Canvas c, float k)
+        void Buttons(Canvas c, float k, Color dark)
         {
             Vector2 size = _s.buttonSize * k;
             var byParent = new Dictionary<Transform, List<RectTransform>>();
@@ -113,6 +113,18 @@ namespace SmartData.UIStandard
                 if (Skip(b.transform)) continue;
                 Component label;
                 if (!IsLabelButton(b, out label)) continue;
+                if (label != null && _s.fixContrast)
+                {
+                    // label against its own button: white on a dark button, the dark design colour on a light one
+                    var bg = b.targetGraphic as Graphic;
+                    if (bg != null && bg.enabled && bg.color.a >= 0.5f)
+                    {
+                        float bl = GraphicLum(bg);
+                        if (bl >= 0f && b.transition == Selectable.Transition.ColorTint) bl *= Lum(b.colors.normalColor);
+                        if (bl >= 0f) ContrastAgainst(label, bl, dark);
+                    }
+                }
+                if (!_s.standardizeButtons) continue;
                 var rt = (RectTransform)b.transform;
                 SetButtonSize(rt, size);
                 List<RectTransform> l;
@@ -175,6 +187,7 @@ namespace SmartData.UIStandard
         // ---------------------------------------------------------------- texts
         void Texts(Canvas c, float k, float screenLum, Color dark)
         {
+            if (_s.fixContrast) IndexGraphics(c);
             foreach (Component t in TextsIn(c.transform))
             {
                 if (!((Behaviour)t).isActiveAndEnabled || Skip(t.transform)) continue;
@@ -214,13 +227,87 @@ namespace SmartData.UIStandard
         void FixContrast(Component t, Color dark, float screenLum)
         {
             Color cur = GetColor(t);
-            float bg = PanelLum(t.transform);
+            float bg = BackLum(t);
             if (bg < 0f) bg = screenLum;
             if (bg < 0f) return;                                                             // unknown background (3D / sprite world)
+            ContrastAgainst(t, bg, dark);
+        }
+
+        void ContrastAgainst(Component t, float bg, Color dark)
+        {
+            Color cur = GetColor(t);
             float tl = Lum(cur);
             if (tl > 0.62f && bg > 0.62f) SetColor(t, new Color(dark.r, dark.g, dark.b, cur.a));        // light on light -> dark
             else if (tl < 0.38f && bg < 0.38f) SetColor(t, new Color(1f, 1f, 1f, cur.a));              // dark on dark -> white
             else if (Mathf.Abs(tl - bg) < 0.3f) SetColor(t, bg > 0.5f ? new Color(dark.r, dark.g, dark.b, cur.a) : new Color(1f, 1f, 1f, cur.a)); // too close
+        }
+
+
+        // Graphics of the canvas being processed, in draw order (back to front).
+        readonly List<Graphic> _gs = new List<Graphic>();
+        readonly Dictionary<Graphic, int> _gi = new Dictionary<Graphic, int>();
+        Canvas _gsCanvas;
+        void IndexGraphics(Canvas c)
+        {
+            _gs.Clear(); _gi.Clear(); _gsCanvas = c;
+            c.GetComponentsInChildren(false, _gs);
+            for (int i = 0; i < _gs.Count; i++) _gi[_gs[i]] = i;
+        }
+
+        /// Luminance of what is really drawn behind the middle of the text: the front-most visible Image/RawImage that
+        /// was drawn before it (same canvas, then canvases drawn underneath) and covers that point. -1 = none found.
+        float BackLum(Component t)
+        {
+            var rtT = t.transform as RectTransform;
+            if (rtT == null) return PanelLum(t.transform);
+            Vector3 p = rtT.TransformPoint(rtT.rect.center);
+            var tg = t as Graphic; int idx;
+            if (tg != null && _gi.TryGetValue(tg, out idx))
+            {
+                float l = HitLum(_gs, idx - 1, p);
+                if (l >= 0f) return l;
+            }
+            else
+            {
+                float l = PanelLum(t.transform);
+                if (l >= 0f) return l;
+            }
+            // canvases drawn underneath this one
+            if (_gsCanvas != null)
+            {
+                var others = new List<Canvas>();
+                foreach (Canvas o in FindObjectsOfType<Canvas>())
+                    if (o != _gsCanvas && o.isRootCanvas && o.gameObject.activeInHierarchy && o.renderMode != RenderMode.WorldSpace && DrawnBelow(o, _gsCanvas)) others.Add(o);
+                others.Sort((a, b) => DrawKey(b).CompareTo(DrawKey(a)));                    // front-most first
+                var list = new List<Graphic>();
+                foreach (Canvas o in others)
+                {
+                    list.Clear(); o.GetComponentsInChildren(false, list);
+                    float l = HitLum(list, list.Count - 1, p);
+                    if (l >= 0f) return l;
+                }
+            }
+            return -1f;
+        }
+
+        static float DrawKey(Canvas c) { return (c.renderMode == RenderMode.ScreenSpaceOverlay ? 100000f : 0f) + c.sortingOrder; }
+        static bool DrawnBelow(Canvas o, Canvas me) { return DrawKey(o) < DrawKey(me); }
+
+        static float HitLum(List<Graphic> list, int from, Vector3 worldPoint)
+        {
+            for (int i = from; i >= 0; i--)
+            {
+                var g = list[i];
+                if (!(g is Image) && !(g is RawImage)) continue;
+                if (!g.enabled || g.color.a < 0.5f) continue;
+                if (g.canvasRenderer != null && g.canvasRenderer.GetInheritedAlpha() < 0.5f) continue;
+                var rt = g.rectTransform;
+                Vector3 lp = rt.InverseTransformPoint(worldPoint);
+                if (!rt.rect.Contains(new Vector2(lp.x, lp.y))) continue;
+                float l = GraphicLum(g);
+                if (l >= 0f) return l;
+            }
+            return -1f;
         }
 
         /// Luminance of the nearest visible panel behind the text (-1 = none).
@@ -393,6 +480,22 @@ namespace SmartData.UIStandard
         {
             int s = Mathf.Max(8, Mathf.RoundToInt(size)), mn = Mathf.Max(8, Mathf.RoundToInt(min));
             var lt = t as Text;
+            if (lt != null && SingleWord(lt.text))
+            {
+                // one word must never break inside the word: fixed size, shrunk until the word fits the box
+                if (lt.resizeTextForBestFit) lt.resizeTextForBestFit = false;
+                if (lt.horizontalOverflow != HorizontalWrapMode.Overflow) lt.horizontalOverflow = HorizontalWrapMode.Overflow;
+                if (lt.verticalOverflow != VerticalWrapMode.Overflow) lt.verticalOverflow = VerticalWrapMode.Overflow;
+                if (lt.fontSize != s) lt.fontSize = s;
+                Rect r = lt.rectTransform.rect;
+                float pw = lt.preferredWidth, ph = lt.preferredHeight;
+                float f = 1f;
+                if (pw > 0f && r.width > 0f) f = Mathf.Min(f, r.width * 0.94f / pw);
+                if (ph > 0f && r.height > 0f) f = Mathf.Min(f, r.height / ph);
+                int fs = Math.Max(Math.Min(mn, s), Mathf.FloorToInt(s * f));
+                if (lt.fontSize != fs) lt.fontSize = fs;
+                return;
+            }
             if (lt != null)
             {
                 if (lt.fontSize != s) lt.fontSize = s;
@@ -403,10 +506,19 @@ namespace SmartData.UIStandard
                 if (lt.horizontalOverflow != HorizontalWrapMode.Wrap) lt.horizontalOverflow = HorizontalWrapMode.Wrap;
                 return;
             }
+            if (SingleWord(GetText(t))) SetProp(t, "enableWordWrapping", false);
             SetProp(t, "enableAutoSizing", true);
             SetProp(t, "fontSizeMax", (float)s);
             SetProp(t, "fontSizeMin", (float)mn);
             SetProp(t, "fontSize", (float)s);
+        }
+
+        static bool SingleWord(string x)
+        {
+            if (string.IsNullOrEmpty(x)) return false;
+            x = x.Trim();
+            for (int i = 0; i < x.Length; i++) if (char.IsWhiteSpace(x[i])) return false;
+            return x.Length > 0;
         }
 
         void SetBold(Component t, bool bold)
