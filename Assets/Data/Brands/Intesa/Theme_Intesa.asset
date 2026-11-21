@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33109ec89415942ea8d36079b5ae0e07, type: 3}
+  m_Name: Theme_Intesa
+  m_EditorClassIdentifier: 
+  themeName: Banca Intesa
+  logoDatabase: {fileID: 11400000, guid: cdf70a760426440eadcdd6b8ee1274bb, type: 2}
+  visuals:
+    backgroundColor: {r: 0.0209, g: 0.1884, b: 0.0963, a: 1.0}
+    backgroundSprite: {fileID: 21300000, guid: 354c8883bc7344febfba3e7d1d4608fc, type: 3}
+    backgroundFit: 0
+    player1Accent: {r: 1.0, g: 1.0, b: 1.0, a: 1.0}
+    player2Accent: {r: 1.0, g: 1.0, b: 1.0, a: 1.0}
+    tileSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+    tileColor: {r: 1.0, g: 1.0, b: 1.0, a: 1.0}
+    tileFrameColor: {r: 1.0, g: 1.0, b: 1.0, a: 0.22}
+    tileFrameThickness: 5
+    tileIconPadding: 0.05
+    correctColor: {r: 0.2634, g: 0.8334, b: 0.5199, a: 1.0}
+    wrongColor: {r: 0.7858, g: 0.5884, b: 0.1279, a: 1.0}
+    revealColor: {r: 1.0, g: 0.8196, b: 0.0, a: 1.0}
+    lockOverlayColor: {r: 0.6536, g: 0.4894, b: 0.1064, a: 0.5}
+    dividerColor: {r: 1.0, g: 1.0, b: 1.0, a: 0.35}
+    buttonSprite: {fileID: 21300000, guid: 5e1e1d4efbfd4f218c71d777c51d4867, type: 3}
+    buttonColor: {r: 1, g: 1, b: 1, a: 1}
+    buttonTextColor: {r: 1, g: 1, b: 1, a: 1}
+    textColor: {r: 1.0, g: 1.0, b: 1.0, a: 1.0}
+    secondaryTextColor: {r: 1.0, g: 1.0, b: 1.0, a: 0.78}
+    hudColor: {r: 0.0, g: 0.0, b: 0.0, a: 0.3}
+    adminPanelColor: {r: 0.0108, g: 0.0974, b: 0.0498, a: 0.97}
+    brandLogo: {fileID: 21300000, guid: 90b88217e22e411eaf118231d377e049, type: 3}
+    circleSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  font: {fileID: 0}
+  tileAspect: 3.2
+  texts:
+  - languageCode: SR
+    title: "DUEL"
+    subtitle: "Prona\u0111i pogre\u0161an logo pre protivnika \u2013 dodirni ekran za po\u010Detak"
+  - languageCode: EN
+    title: FIND THE FAKE LOGO
+    subtitle: "Banca Intesa challenge \u2013 touch the screen to start"

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd7bbbd508ebd46fba815d198091534a, type: 3}
+  m_Name: Intesa_Logos
+  m_EditorClassIdentifier: 
+  logos:
+  - {fileID: 11400000, guid: b6052c99f556444c9dde5f8197f4ce1a, type: 2}
+  - {fileID: 11400000, guid: 8fd95f8e64184c14a73ea115881157cb, type: 2}
+  - {fileID: 11400000, guid: 1947ddbe12ad4a6e886590852b7ccf95, type: 2}
+  - {fileID: 11400000, guid: ab841937cc064aa2b2b55938a98f90f0, type: 2}
+  - {fileID: 11400000, guid: b6284e7f5da74af190e8ad787a3c0324, type: 2}
+  - {fileID: 11400000, guid: a300191bedeb4cac9dcf8c7a41f7ceeb, type: 2}
