@@ -11,7 +11,7 @@ namespace SmartData.FindFake
         public string languageName = "Srpski";
 
         [Header("Attract / Start")]
-        public string title = "PRONAĐI POGREŠAN LOGO";
+        public string title = "DUEL";
         public string subtitle = "Dodirni ekran za početak";
         public string player1Name = "IGRAČ 1";
         public string player2Name = "IGRAČ 2";

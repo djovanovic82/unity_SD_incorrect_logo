@@ -108,8 +108,8 @@ namespace SmartData.FindFake.EditorTools
                 EditorGUILayout.EndHorizontal();
                 EditorGUILayout.BeginHorizontal();
                 PreviewButton(app, "GAME", AppState.Playing);
-                PreviewButton(app, "ROUND RESULT", AppState.RoundResult);
-                PreviewButton(app, "MATCH RESULT", AppState.MatchResult);
+                PreviewButton(app, "REZULTAT RUNDE", AppState.RoundResult);
+                PreviewButton(app, "REZULTAT MEČA", AppState.MatchResult);
                 PreviewButton(app, "ADMIN", AppState.Admin);
                 EditorGUILayout.EndHorizontal();
 

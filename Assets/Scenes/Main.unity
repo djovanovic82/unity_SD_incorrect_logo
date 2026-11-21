@@ -350,8 +350,8 @@ MonoBehaviour:
     languages:
     - languageCode: SR
       languageName: Srpski
-      title: "PRONA\u0110I POGRE\u0160AN LOGO"
-      subtitle: "Coca-Cola izazov \u2013 dodirni ekran za po\u010Detak"
+      title: "DUEL"
+      subtitle: "Prona\u0111i pogre\u0161an logo pre protivnika \u2013 dodirni ekran za po\u010Detak"
       player1Name: "IGRA\u010C 1"
       player2Name: "IGRA\u010C 2"
       startHint: Dodirni dugme kada si spreman

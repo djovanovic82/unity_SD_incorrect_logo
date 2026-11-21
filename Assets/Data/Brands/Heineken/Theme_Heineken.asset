@@ -42,8 +42,8 @@ MonoBehaviour:
   tileAspect: 3.2
   texts:
   - languageCode: SR
-    title: "PRONA\u0110I POGRE\u0160AN LOGO"
-    subtitle: "Heineken izazov \u2013 dodirni ekran za po\u010Detak"
+    title: "DUEL"
+    subtitle: "Prona\u0111i pogre\u0161an logo pre protivnika \u2013 dodirni ekran za po\u010Detak"
   - languageCode: EN
     title: FIND THE FAKE LOGO
     subtitle: "Heineken challenge \u2013 touch the screen to start"
