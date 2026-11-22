@@ -15,28 +15,29 @@ MonoBehaviour:
   themeName: Camel
   logoDatabase: {fileID: 11400000, guid: 3fd7ba87301f44220bd27403874013e0, type: 2}
   visuals:
-    backgroundColor: {r: 0.1804, g: 0.102, b: 0.0471, a: 1}
+    backgroundColor: {r: 0.9725, g: 0.8471, b: 0.3294, a: 1}
     backgroundSprite: {fileID: 21300000, guid: de27b869264e04128914c7d5251b217a, type: 3}
     backgroundFit: 0
-    player1Accent: {r: 0.9412, g: 0.7255, b: 0.2941, a: 1}
-    player2Accent: {r: 0.8784, g: 0.4706, b: 0.1843, a: 1}
+    player1Accent: {r: 0.0510, g: 0.2902, b: 0.5765, a: 1}
+    player2Accent: {r: 0.0510, g: 0.2902, b: 0.5765, a: 1}
     tileSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-    tileColor: {r: 0.1647, g: 0.0941, b: 0.0431, a: 1}
-    tileFrameColor: {r: 0.9412, g: 0.7255, b: 0.2941, a: 0.35}
+    tileColor: {r: 1.0000, g: 1.0000, b: 1.0000, a: 1}
+    tileFrameColor: {r: 0.0510, g: 0.2902, b: 0.5765, a: 0.35}
     tileFrameThickness: 5
-    tileIconPadding: 0.07
-    correctColor: {r: 0.298, g: 0.851, b: 0.3922, a: 1}
-    wrongColor: {r: 1, g: 0.302, b: 0.2392, a: 1}
-    revealColor: {r: 1, g: 0.8784, b: 0.5412, a: 1}
-    lockOverlayColor: {r: 0.4706, g: 0.1176, b: 0.0392, a: 0.55}
-    dividerColor: {r: 0.9412, g: 0.7255, b: 0.2941, a: 0.45}
-    buttonSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-    buttonColor: {r: 0.9412, g: 0.7255, b: 0.2941, a: 1}
-    buttonTextColor: {r: 0.1647, g: 0.0941, b: 0.0431, a: 1}
-    textColor: {r: 1, g: 0.9529, b: 0.8627, a: 1}
-    secondaryTextColor: {r: 1, g: 0.9529, b: 0.8627, a: 0.78}
-    hudColor: {r: 0, g: 0, b: 0, a: 0.35}
-    adminPanelColor: {r: 0.1176, g: 0.0706, b: 0.0314, a: 0.97}
+    tileIconPadding: 0.06
+    correctColor: {r: 0.1804, g: 0.8, b: 0.4431, a: 1}
+    wrongColor: {r: 0.102, g: 0.102, b: 0.102, a: 1}
+    revealColor: {r: 0.8863, g: 0.5882, b: 0.1569, a: 1}
+    lockOverlayColor: {r: 0.0314, g: 0.2039, b: 0.4235, a: 0.5}
+    dividerColor: {r: 1, g: 1, b: 1, a: 0}
+    buttonSprite: {fileID: 21300000, guid: 4bc4e41093824319b3c660c660f5ce93, type: 3}
+    buttonColor: {r: 1.0000, g: 1.0000, b: 1.0000, a: 1}
+    buttonTextColor: {r: 1.0000, g: 1.0000, b: 1.0000, a: 1}
+    textColor: {r: 0.0510, g: 0.2902, b: 0.5765, a: 1}
+    secondaryTextColor: {r: 0.0510, g: 0.2902, b: 0.5765, a: 0.8}
+    hudColor: {r: 1.0000, g: 1.0000, b: 1.0000, a: 0.55}
+    adminPanelColor: {r: 0.0314, g: 0.2039, b: 0.4235, a: 0.97}
+    brandLogo: {fileID: 21300000, guid: 41ab384efebd46be95928d13c5ce4fe5, type: 3}
     circleSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   font: {fileID: 0}
   tileAspect: 1.6
