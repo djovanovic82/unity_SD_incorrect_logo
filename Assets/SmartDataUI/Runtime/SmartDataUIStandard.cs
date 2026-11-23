@@ -48,9 +48,57 @@ namespace SmartData.UIStandard
 
         void LateUpdate()
         {
-            if (_s == null || !_s.enabled || Time.unscaledTime < _next) return;
+            if (_s == null || !_s.enabled) return;
+            // Run in the SAME frame a screen appears / the screen size changes (before the canvas is drawn), so buttons
+            // and texts never show in their original size first and then jump. Otherwise every 0.25 s, and every frame
+            // during the first second while the app settles.
+            int sig = Signature();
+            bool changed = sig != _sig;
+            _sig = sig;
+            if (!changed && Time.unscaledTime < _next && Time.unscaledTime > 1.5f) return;
             _next = Time.unscaledTime + 0.25f;
             try { Pass(); } catch (Exception e) { Debug.LogWarning("[SmartData UI Standard] " + e.Message); }
+        }
+
+        int _sig;
+        readonly List<Canvas> _roots = new List<Canvas>();
+        float _rootsAt = -1f;
+
+        /// Cheap fingerprint of what is on screen: screen size + which screens/panels (3 levels under each root canvas) are active.
+        int Signature()
+        {
+            if (Time.unscaledTime - _rootsAt > 0.5f || _rootsAt < 0f)
+            {
+                _rootsAt = Time.unscaledTime; _roots.Clear();
+                foreach (Canvas c in FindObjectsOfType<Canvas>())
+                    if (c.isRootCanvas && c.renderMode != RenderMode.WorldSpace) _roots.Add(c);
+            }
+            unchecked
+            {
+                int h = Screen.width * 73856093 ^ Screen.height * 19349663;
+                foreach (Canvas c in _roots)
+                {
+                    if (c == null) continue;
+                    h = h * 31 + (c.gameObject.activeInHierarchy ? 1 : 2);
+                    h = Walk(c.transform, 0, h);
+                }
+                return h;
+            }
+        }
+
+        static int Walk(Transform t, int depth, int h)
+        {
+            unchecked
+            {
+                int n = t.childCount;
+                for (int i = 0; i < n; i++)
+                {
+                    Transform ch = t.GetChild(i);
+                    h = h * 31 + (ch.gameObject.activeSelf ? 3 : 5);
+                    if (depth < 2 && ch.gameObject.activeSelf) h = Walk(ch, depth + 1, h);
+                }
+                return h;
+            }
         }
 
         // ---------------------------------------------------------------- pass
@@ -439,11 +487,27 @@ namespace SmartData.UIStandard
                     aspect = raw.texture.width / Mathf.Max(1f, (float)raw.texture.height);
                 }
                 if (aspect <= 0f || rt.parent == null || rt.parent.GetComponent<LayoutGroup>() != null) continue;
+                if (HasOwnFitter(g.gameObject)) continue;   // the game sizes this background itself (a fitter here would fight it in a loop)
                 var fit = rt.GetComponent<AspectRatioFitter>();
                 if (fit == null) fit = rt.gameObject.AddComponent<AspectRatioFitter>();
                 if (fit.aspectMode != AspectRatioFitter.AspectMode.EnvelopeParent) fit.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent;
                 if (Mathf.Abs(fit.aspectRatio - aspect) > 0.001f) fit.aspectRatio = aspect;
             }
+        }
+
+        /// A game script on the background object (other than Unity UI / this standard) = it fits the image itself.
+        static bool HasOwnFitter(GameObject go)
+        {
+            foreach (MonoBehaviour mb in go.GetComponents<MonoBehaviour>())
+            {
+                if (mb == null || mb is Graphic || mb is AspectRatioFitter || mb is SmartDataUIStandardIgnore) continue;
+                string ns = mb.GetType().Namespace ?? "";
+                if (ns.StartsWith("UnityEngine") || ns.StartsWith("TMPro")) continue;
+                var stray = go.GetComponent<AspectRatioFitter>();
+                if (stray != null && stray.aspectMode == AspectRatioFitter.AspectMode.EnvelopeParent) stray.enabled = false;
+                return true;
+            }
+            return false;
         }
 
         // ---------------------------------------------------------------- text helpers (legacy Text + TextMeshPro via reflection)
