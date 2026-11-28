@@ -1,5 +1,8 @@
 # Changelog
 
+## Standard v2.0 — logo u zoni svakog igrača — 2026-11-28
+- Logo brenda u zoni svakog igrača, okrenut ka njemu: tokom igre (vodeni žig u polju igrača, ne smeta igri) i na ekranu rezultata. Providnost / uključivanje u brend profilu (Inspector).
+
 ## Standard v2.0 (tura 2) — 2026-11-28
 - SmartData Core 2.3.0 ugrađen u `Packages/com.smartdata.core`: zastor bez poskoka pri pokretanju (profil ekrana se pamti).
 - „SPREMAN!“ → „SPREMAN“ („READY!“ → „READY“).

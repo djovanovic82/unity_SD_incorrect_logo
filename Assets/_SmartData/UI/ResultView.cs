@@ -50,6 +50,10 @@ namespace SmartData.FindFake
                 UiStyle.Text(h.caption, app.typography, app.typography.subtitleSize, fontScale, app.visuals.secondaryTextColor);
                 UiStyle.Text(h.score, app.typography, app.typography.scoreSize * 1.4f, fontScale, accent);
                 UiStyle.Button(h.playAgain, app.visuals, accent, app.typography, fontScale);
+                // standard v2.0: logo brenda u zoni svakog igrača i na rezultatu
+                Transform c = h.headline != null ? h.headline.transform.parent : null;
+                UiStyle.BrandLogo(c, app.visuals.brandLogo, new Vector2(0.30f, 0.84f), new Vector2(0.70f, 0.97f));
+                if (h.headline != null) UiStyle.Anchors(h.headline.rectTransform, new Vector2(0.05f, 0.56f), new Vector2(0.95f, app.visuals.brandLogo != null ? 0.83f : 0.94f));
             }
         }
 
