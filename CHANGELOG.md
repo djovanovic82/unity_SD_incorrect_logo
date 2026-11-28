@@ -1,5 +1,9 @@
 # Changelog
 
+## Standard v2.0 (tura 2) — 2026-11-28
+- SmartData Core 2.3.0 ugrađen u `Packages/com.smartdata.core`: zastor bez poskoka pri pokretanju (profil ekrana se pamti).
+- „SPREMAN!“ → „SPREMAN“ („READY!“ → „READY“).
+
 ## Unreleased — App icon
 
 - `VERSION` renamed to `VERSION.txt`: on macOS a root file named `VERSION` is picked up by the Android NDK as the C++ `<version>` header and breaks the IL2CPP build.

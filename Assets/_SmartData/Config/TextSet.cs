@@ -17,7 +17,7 @@ namespace SmartData.FindFake
         public string player2Name = "IGRAČ 2";
         public string startHint = "Dodirni dugme kada si spreman";
         public string readyButton = "SPREMAN";
-        public string readyDone = "SPREMAN!";
+        public string readyDone = "SPREMAN";
         public string startButton = "START";
         public string waitingOpponent = "Čeka se protivnik...";
         public string opponentReady = "Protivnik je spreman!";
@@ -80,7 +80,7 @@ namespace SmartData.FindFake
                 player2Name = "PLAYER 2",
                 startHint = "Press the button when you are ready",
                 readyButton = "READY",
-                readyDone = "READY!",
+                readyDone = "READY",
                 startButton = "START",
                 waitingOpponent = "Waiting for opponent...",
                 opponentReady = "Opponent is ready!",

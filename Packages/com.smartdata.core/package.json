@@ -1,0 +1,9 @@
+{
+  "name": "com.smartdata.core",
+  "version": "2.3.0",
+  "displayName": "SmartData Core",
+  "description": "Zajednički delovi SmartData Unity igara po standardu v2.0: zastor bez poskoka (profil ekrana), dugmad sa statusima, odbrojavanje u kvadratima, zone igrača, CSV statistika.",
+  "unity": "2022.3",
+  "author": { "name": "SmartData" },
+  "dependencies": { "com.unity.ugui": "1.0.0" }
+}

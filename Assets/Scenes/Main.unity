@@ -356,7 +356,7 @@ MonoBehaviour:
       player2Name: "IGRA\u010C 2"
       startHint: Dodirni dugme kada si spreman
       readyButton: SPREMAN
-      readyDone: SPREMAN!
+      readyDone: SPREMAN
       startButton: START
       waitingOpponent: "\u010Ceka se protivnik..."
       opponentReady: Protivnik je spreman!
@@ -398,7 +398,7 @@ MonoBehaviour:
       player2Name: PLAYER 2
       startHint: Press the button when you are ready
       readyButton: READY
-      readyDone: READY!
+      readyDone: READY
       startButton: START
       waitingOpponent: Waiting for opponent...
       opponentReady: Opponent is ready!
